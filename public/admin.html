@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — DTC Digital Tools Corner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f0f4ff;
+      --white:#ffffff;
+      --sidebar:#1e293b;
+      --sidebar-hover:rgba(255,255,255,.07);
+      --sidebar-active:rgba(37,99,235,.25);
+      --blue:#2563eb;
+      --blue-dark:#1d4ed8;
+      --blue-light:#eff6ff;
+      --blue-mid:#dbeafe;
+      --border:#e2e8f0;
+      --border2:#cbd5e1;
+      --text:#1e293b;
+      --muted:#64748b;
+      --muted2:#94a3b8;
+      --success:#16a34a;
+      --success-bg:#f0fdf4;
+      --success-border:#bbf7d0;
+      --error:#dc2626;
+      --error-bg:#fef2f2;
+      --error-border:#fecaca;
+      --warn:#d97706;
+      --warn-bg:#fffbeb;
+      --warn-border:#fde68a;
+      --shadow:0 1px 3px rgba(0,0,0,.08),0 2px 8px rgba(0,0,0,.04);
+      --shadow-md:0 4px 16px rgba(0,0,0,.08);
+      --sidebar-w:240px;
+    }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;font-size:14px}
+
+    /* ── Sidebar ── */
+    .sidebar{width:var(--sidebar-w);background:var(--sidebar);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .25s}
+    .sb-brand{padding:1.4rem 1.2rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.08)}
+    .sb-logo{display:flex;align-items:center;gap:.6rem;margin-bottom:.1rem}
+    .sb-icon{width:32px;height:32px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .sb-icon svg{width:17px;height:17px}
+    .sb-name{font-size:1rem;font-weight:700;color:#fff;letter-spacing:-.02em}
+    .sb-tag{font-size:.62rem;color:rgba(255,255,255,.4);margin-top:.08rem}
+    .nav{flex:1;padding:.8rem 0;overflow-y:auto}
+    .nav-sec{font-size:.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:.6rem 1.2rem .25rem}
+    .nav-item{display:flex;align-items:center;gap:.6rem;padding:.58rem 1.2rem;font-size:.82rem;color:rgba(255,255,255,.55);cursor:pointer;transition:all .15s;border-left:2px solid transparent;user-select:none}
+    .nav-item:hover{color:rgba(255,255,255,.85);background:var(--sidebar-hover)}
+    .nav-item.active{color:#fff;background:var(--sidebar-active);border-left-color:var(--blue)}
+    .nav-item .icon{font-size:.9rem;width:18px;text-align:center;flex-shrink:0}
+    .nav-badge{margin-left:auto;background:rgba(217,119,6,.2);border:1px solid rgba(217,119,6,.3);border-radius:99px;font-size:.6rem;font-family:'JetBrains Mono',monospace;padding:.1rem .45rem;color:#fbbf24;font-weight:600}
+    .sb-footer{padding:1rem 1.2rem;border-top:1px solid rgba(255,255,255,.07);font-size:.63rem;color:rgba(255,255,255,.25)}
+
+    /* ── Main ── */
+    .main{margin-left:var(--sidebar-w);flex:1;padding:2rem 2rem 5rem;min-width:0}
+    @media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:none}.main{margin-left:0;padding:1.2rem 1rem 4rem}.mob-btn{display:flex!important}}
+
+    .mob-btn{display:none;align-items:center;gap:.5rem;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:.45rem .8rem;font-size:.8rem;color:var(--muted);cursor:pointer;margin-bottom:1.4rem;box-shadow:var(--shadow)}
+
+    .page{display:none}.page.active{display:block}
+
+    /* Page header */
+    .ph{margin-bottom:1.8rem}
+    .ph-title{font-size:1.4rem;font-weight:700;color:var(--text);letter-spacing:-.02em}
+    .ph-sub{font-size:.82rem;color:var(--muted);margin-top:.25rem}
+
+    /* Cards */
+    .card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.2rem;box-shadow:var(--shadow)}
+    .card-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between}
+
+    /* Login */
+    #login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);width:100%;padding:2rem 1rem}
+    .login-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:2.5rem 2rem;width:100%;max-width:380px;box-shadow:var(--shadow-md)}
+    .login-card .top{display:flex;align-items:center;gap:.7rem;margin-bottom:1.8rem}
+
+    /* Forms */
+    label{display:block;font-size:.72rem;font-weight:600;color:var(--text);margin-bottom:.38rem}
+    input,select,textarea{width:100%;background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:.65rem .9rem;font-family:'Inter',sans-serif;font-size:.86rem;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none}
+    input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+    input::placeholder,textarea::placeholder{color:var(--muted2)}
+    select option{background:var(--white)}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.9rem}
+    .form-group{margin-bottom:.9rem}
+    @media(max-width:560px){.form-row{grid-template-columns:1fr}}
+
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.58rem 1.2rem;border-radius:8px;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;border:none;transition:all .18s;white-space:nowrap;letter-spacing:.01em}
+    .btn:hover:not(:disabled){transform:translateY(-1px)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .btn-primary{background:var(--blue);color:#fff}.btn-primary:hover:not(:disabled){background:var(--blue-dark);box-shadow:0 4px 14px rgba(37,99,235,.3)}
+    .btn-success{background:#15803d;color:#fff}.btn-success:hover:not(:disabled){background:#166534;box-shadow:0 4px 14px rgba(22,163,74,.25)}
+    .btn-danger{background:var(--error);color:#fff}.btn-danger:hover:not(:disabled){background:#b91c1c;box-shadow:0 4px 14px rgba(220,38,38,.25)}
+    .btn-outline{background:var(--white);border:1.5px solid var(--border);color:var(--text)}.btn-outline:hover{border-color:var(--border2);background:#f8fafc}
+    .btn-ghost-blue{background:var(--blue-light);border:1.5px solid var(--blue-mid);color:var(--blue)}.btn-ghost-blue:hover{background:#dbeafe}
+    .btn-sm{padding:.28rem .7rem;font-size:.72rem}
+
+    /* Link result */
+    .link-result{display:none;margin-top:1rem;background:var(--success-bg);border:1px solid var(--success-border);border-radius:10px;padding:.9rem 1rem}
+    .link-result.show{display:block}
+    .lr-label{font-size:.63rem;text-transform:uppercase;letter-spacing:.1em;color:var(--success);font-weight:700;margin-bottom:.45rem}
+    .lr-row{display:flex;align-items:center;gap:.5rem}
+    .lr-text{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .copy-btn{background:var(--white);border:1.5px solid var(--border);border-radius:6px;padding:.22rem .55rem;font-size:.66rem;font-family:'Inter',sans-serif;color:var(--muted);cursor:pointer;transition:all .18s;flex-shrink:0;font-weight:600}
+    .copy-btn:hover,.copy-btn.done{border-color:var(--success);color:var(--success);background:var(--success-bg)}
+    .lr-note{font-size:.68rem;color:var(--muted);margin-top:.5rem}
+
+    /* Stats */
+    .stats{display:grid;grid-template-columns:repeat(6,1fr);gap:.8rem;margin-bottom:1.3rem}
+    @media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}}
+    .stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:.9rem 1rem;box-shadow:var(--shadow)}
+    .stat-val{font-size:1.5rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--text)}
+    .stat-lbl{font-size:.61rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:.1rem;font-weight:500}
+    .sv-blue{color:var(--blue)}.sv-warn{color:var(--warn)}.sv-green{color:var(--success)}.sv-red{color:var(--error)}.sv-ind{color:#6366f1}
+
+    /* Filter tabs */
+    .filters{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:1rem}
+    .fb{padding:.28rem .8rem;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-family:'Inter',sans-serif;transition:all .18s}
+    .fb:hover{border-color:var(--border2);color:var(--text);background:#f8fafc}
+    .fb.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+    /* Table */
+    .tbl-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+    table{width:100%;border-collapse:collapse;font-size:.78rem}
+    thead{background:#f8fafc}
+    thead tr{border-bottom:1px solid var(--border)}
+    th{text-align:left;font-size:.62rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);padding:.55rem .75rem;font-weight:600;white-space:nowrap}
+    td{padding:.72rem .75rem;border-bottom:1px solid var(--border);vertical-align:top;background:var(--white)}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:#fafbff}
+    tr.row-expiring td{background:#fffbeb}
+    tr.row-expired-sub td{background:#fff8f8}
+    tr.row-declined td{background:#fff5f5}
+
+    /* Badges */
+    .badge{display:inline-flex;align-items:center;gap:.27rem;padding:.18rem .6rem;border-radius:99px;font-size:.63rem;font-weight:600;white-space:nowrap}
+    .b-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+    .b-pend{background:#f1f5f9;border:1px solid #e2e8f0;color:var(--muted)}
+    .b-acc{background:var(--blue-light);border:1px solid var(--blue-mid);color:var(--blue)}
+    .b-sub{background:var(--warn-bg);border:1px solid var(--warn-border);color:var(--warn)}
+    .b-act{background:var(--success-bg);border:1px solid var(--success-border);color:var(--success)}
+    .b-exp{background:var(--error-bg);border:1px solid var(--error-border);color:var(--error)}
+    .b-dec{background:#fdf4ff;border:1px solid #e9d5ff;color:#7c3aed}
+
+    /* Cells */
+    .cust-name{font-weight:600;font-size:.82rem;color:var(--text);margin-bottom:.12rem}
+    .cust-meta{font-size:.68rem;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:.08rem}
+
+    .orgid-wrap{display:flex;align-items:flex-start;gap:.35rem}
+    .orgid-txt{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--text);word-break:break-all;line-height:1.55;flex:1}
+    .icopy{background:none;border:1.5px solid var(--border);border-radius:5px;padding:.12rem .42rem;font-size:.6rem;font-family:'Inter',sans-serif;color:var(--muted);cursor:pointer;transition:all .18s;flex-shrink:0;margin-top:1px;font-weight:600}
+    .icopy:hover,.icopy.done{border-color:var(--success);color:var(--success);background:var(--success-bg)}
+
+    .tl-cell{font-size:.65rem;color:var(--muted);line-height:1.7}
+    .tl-row{display:flex;gap:.4rem}.tl-lbl{color:var(--muted2);min-width:52px;flex-shrink:0;font-weight:500}.tl-val{color:var(--text)}
+    .tl-val.green{color:var(--success)}.tl-val.red{color:var(--error)}
+
+    .acount{display:inline-block;background:var(--blue-light);border:1px solid var(--blue-mid);border-radius:4px;padding:.08rem .4rem;font-size:.61rem;font-family:'JetBrains Mono',monospace;color:var(--blue);margin-top:.25rem}
+    .acount.zero{background:#f1f5f9;border-color:var(--border);color:var(--muted2)}
+
+    .xbtn{background:none;border:none;color:var(--blue);cursor:pointer;font-size:.67rem;font-family:'Inter',sans-serif;padding:0;font-weight:500;display:block;margin-top:.22rem;transition:color .15s}
+    .xbtn:hover{color:var(--blue-dark);text-decoration:underline}
+    .log-row{display:none;background:#f8faff}.log-row.open{display:table-row}
+    .log-inner{padding:.65rem .75rem .65rem 1.8rem;font-size:.63rem;font-family:'JetBrains Mono',monospace;border-top:1px solid var(--border)}
+    .log-hdr{display:grid;grid-template-columns:140px 110px 1fr;gap:.4rem;font-size:.58rem;color:var(--muted);padding-bottom:.25rem;border-bottom:1px solid var(--border);margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+    .log-entry{display:grid;grid-template-columns:140px 110px 1fr;gap:.4rem;padding:.25rem 0;border-bottom:1px solid #f1f5f9;color:var(--muted)}
+    .log-entry:last-child{border-bottom:none}
+    .le-t{color:var(--text)}.le-ip{color:var(--muted)}.le-ua{color:var(--muted2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+    /* Sub expiry cell */
+    .sub-exp{font-size:.7rem;line-height:1.6}
+    .sub-exp .days{font-weight:700;margin-bottom:.05rem}
+    .sub-exp.ok .days{color:var(--success)}
+    .sub-exp.soon .days{color:var(--warn)}
+    .sub-exp.danger .days{color:var(--error)}
+    .sub-exp .date{color:var(--muted);font-size:.66rem;font-family:'JetBrains Mono',monospace}
+    .exp-flag{display:inline-block;border-radius:4px;font-size:.6rem;font-weight:600;padding:.07rem .4rem;margin-top:.15rem}
+    .exp-flag.soon{background:var(--warn-bg);border:1px solid var(--warn-border);color:var(--warn)}
+    .exp-flag.danger{background:var(--error-bg);border:1px solid var(--error-border);color:var(--error)}
+
+    /* Action buttons */
+    .action-wrap{display:flex;flex-direction:column;gap:.4rem}
+    .approve-btn{background:var(--success-bg);border:1.5px solid var(--success-border);border-radius:7px;padding:.3rem .75rem;font-family:'Inter',sans-serif;font-size:.73rem;font-weight:700;color:var(--success);cursor:pointer;transition:all .18s;white-space:nowrap}
+    .approve-btn:hover:not(:disabled){background:#dcfce7;border-color:#86efac;transform:translateY(-1px)}
+    .approve-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+    .decline-btn{background:var(--error-bg);border:1.5px solid var(--error-border);border-radius:7px;padding:.3rem .75rem;font-family:'Inter',sans-serif;font-size:.73rem;font-weight:700;color:var(--error);cursor:pointer;transition:all .18s;white-space:nowrap}
+    .decline-btn:hover:not(:disabled){background:#fee2e2;border-color:#fca5a5;transform:translateY(-1px)}
+    .approved-ts{font-size:.62rem;color:var(--success);font-family:'JetBrains Mono',monospace;margin-top:.2rem}
+    .declined-ts{font-size:.62rem;color:var(--error);font-family:'JetBrains Mono',monospace;margin-top:.2rem}
+
+    /* Customer cards */
+    .cust-card{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:1.3rem 1.5rem;margin-bottom:.9rem;box-shadow:var(--shadow);transition:all .2s}
+    .cust-card:hover{box-shadow:var(--shadow-md)}
+    .cust-card.expiring{border-color:var(--warn-border);background:var(--warn-bg)}
+    .cust-card.expired-sub{border-color:var(--error-border);background:var(--error-bg)}
+    .cust-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.9rem;flex-wrap:wrap}
+    .cust-nm{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.2rem}
+    .cust-pk{font-size:.76rem;color:var(--muted);font-weight:500}
+    .cust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem .9rem;margin-bottom:.9rem}
+    @media(max-width:560px){.cust-grid{grid-template-columns:1fr 1fr}}
+    .cf-lbl{font-size:.61rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.12rem;font-weight:600}
+    .cf-val{font-size:.75rem;font-family:'JetBrains Mono',monospace;color:var(--text);word-break:break-all}
+    .cf-val.green{color:var(--success)}.cf-val.warn{color:var(--warn)}.cf-val.red{color:var(--error)}
+    .exp-bar-wrap{margin-bottom:.9rem}
+    .exp-bar-label{display:flex;justify-content:space-between;font-size:.64rem;color:var(--muted);margin-bottom:.3rem;font-weight:500}
+    .exp-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+    .exp-bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
+    .email-actions{display:flex;gap:.4rem;flex-wrap:wrap}
+
+    /* Email config */
+    .provider-btns{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.2rem}
+    .gmail-guide{display:none;background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:10px;padding:1rem 1.1rem;margin-bottom:1.2rem;font-size:.79rem;line-height:1.75;color:var(--muted)}
+    .toggle{display:flex;align-items:center;gap:.6rem;cursor:pointer}
+    .toggle input{display:none}
+    .toggle-track{width:36px;height:20px;background:var(--border);border-radius:99px;position:relative;transition:background .2s}
+    .toggle input:checked ~ .toggle-track{background:var(--blue)}
+    .toggle-thumb{width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+    .toggle input:checked ~ .toggle-track .toggle-thumb{left:19px}
+    .email-log-tbl{width:100%;border-collapse:collapse;font-size:.72rem}
+    .email-log-tbl th{text-align:left;font-size:.61rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:.4rem .6rem;font-weight:600;background:#f8fafc;border-bottom:1px solid var(--border)}
+    .email-log-tbl td{padding:.55rem .6rem;border-bottom:1px solid var(--border);color:var(--muted)}
+    .email-log-tbl tr:last-child td{border-bottom:none}
+    .email-log-tbl tr:hover td{background:#f8fafc}
+
+    /* Decline modal */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:200;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+    .modal-overlay.open{display:flex}
+    .modal{background:var(--white);border-radius:14px;padding:1.8rem;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,.15);animation:fadeUp .2s ease}
+    .modal-title{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.4rem}
+    .modal-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.4rem;line-height:1.6}
+    .modal-actions{display:flex;gap:.6rem;justify-content:flex-end;margin-top:1.3rem}
+
+    /* Messages */
+    .msg{font-size:.78rem;padding:.55rem .85rem;border-radius:8px;margin-top:.7rem;display:none;font-weight:500}
+    .msg.show{display:block}
+    .msg.ok{background:var(--success-bg);border:1px solid var(--success-border);color:var(--success)}
+    .msg.err{background:var(--error-bg);border:1px solid var(--error-border);color:var(--error)}
+    .empty{text-align:center;color:var(--muted);font-size:.82rem;padding:2.5rem 0}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="login-wrap">
+  <div class="login-card">
+    <div class="top">
+      <div class="sb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <div><div style="font-size:1.05rem;font-weight:700;color:var(--text)">DTC</div><div style="font-size:.7rem;color:var(--muted)">Digital Tools Corner — Admin</div></div>
+    </div>
+    <div class="form-group">
+      <label>Admin Key</label>
+      <input type="password" id="admin-key" placeholder="Enter your admin key…" onkeydown="if(event.key==='Enter')login()"/>
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:.72rem" onclick="login()">Sign In →</button>
+    <div class="msg err" id="login-err">Incorrect admin key. Please try again.</div>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app" style="display:none;width:100%">
+
+  <nav class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <div class="sb-logo">
+        <div class="sb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <div class="sb-name">DTC</div>
+      </div>
+      <div class="sb-tag">Digital Tools Corner</div>
+    </div>
+    <div class="nav">
+      <div class="nav-sec">Main</div>
+      <div class="nav-item active" onclick="nav('dashboard',this)"><span class="icon">⚡</span>Dashboard</div>
+      <div class="nav-item" onclick="nav('customers',this)"><span class="icon">👤</span>Customers<span class="nav-badge" id="nb-exp" style="display:none">0</span></div>
+      <div class="nav-sec" style="margin-top:.5rem">Settings</div>
+      <div class="nav-item" onclick="nav('email',this)"><span class="icon">✉</span>Email Config</div>
+    </div>
+    <div class="sb-footer">Admin Panel v2.0</div>
+  </nav>
+
+  <main class="main">
+    <button class="mob-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰ Menu</button>
+
+    <!-- Dashboard -->
+    <div class="page active" id="page-dashboard">
+      <div class="ph"><div class="ph-title">Dashboard</div><div class="ph-sub">Manage activation links and review customer submissions.</div></div>
+
+      <div class="card">
+        <div class="card-title">Generate Activation Link</div>
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0"><label>Customer Name</label><input type="text" id="cust-name" placeholder="e.g. Ahmed Khan"/></div>
+          <div class="form-group" style="margin-bottom:0">
+            <label>Package</label>
+            <select id="pkg">
+              <option value="">— Select Package —</option>
+              <option>Claude Pro — 1 Month</option><option>Claude Pro — 3 Months</option>
+              <option>Claude Pro — 6 Months</option><option>Claude Pro — 1 Year</option>
+              <option>GrokSuper — 1 Month</option><option>GrokSuper — 3 Months</option>
+              <option>GrokSuper — 6 Months</option><option>GrokSuper — 1 Year</option>
+              <option>ChatGPT Plus — 1 Month</option><option>ChatGPT Plus — 3 Months</option>
+              <option>ChatGPT Plus — 6 Months</option><option>ChatGPT Plus — 1 Year</option>
+              <option>Custom Package</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:.2rem" onclick="generateLink()">⚡ Generate Link</button>
+        <div class="msg err" id="gen-err"></div>
+        <div class="link-result" id="link-result">
+          <div class="lr-label">✓ Link Ready — Share with customer</div>
+          <div class="lr-row"><span class="lr-text" id="gen-link"></span><button class="copy-btn" id="copy-btn" onclick="copyGenLink()">Copy</button></div>
+          <div class="lr-note">⚠ This link expires in <strong>8 hours</strong> and is single-use.</div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="stat-val" id="s-all">0</div><div class="stat-lbl">Total Links</div></div>
+        <div class="stat"><div class="stat-val sv-ind" id="s-pend">0</div><div class="stat-lbl">Not Opened</div></div>
+        <div class="stat"><div class="stat-val sv-blue" id="s-acc">0</div><div class="stat-lbl">Opened</div></div>
+        <div class="stat"><div class="stat-val sv-warn" id="s-sub">0</div><div class="stat-lbl">Submitted</div></div>
+        <div class="stat"><div class="stat-val sv-green" id="s-act">0</div><div class="stat-lbl">Activated</div></div>
+        <div class="stat"><div class="stat-val sv-red" id="s-exp">0</div><div class="stat-lbl">Expired / Declined</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>All Links</span><button class="btn btn-outline btn-sm" onclick="loadData()">↻ Refresh</button></div>
+        <div class="filters" id="df">
+          <button class="fb active" onclick="setFilter('all',this)">All</button>
+          <button class="fb" onclick="setFilter('pending',this)">Not Opened</button>
+          <button class="fb" onclick="setFilter('accessed',this)">Opened</button>
+          <button class="fb" onclick="setFilter('submitted',this)">Submitted</button>
+          <button class="fb" onclick="setFilter('activated',this)">Activated</button>
+          <button class="fb" onclick="setFilter('declined',this)">Declined</button>
+          <button class="fb" onclick="setFilter('expired',this)">Expired</button>
+        </div>
+        <div id="dash-tbl"><div class="empty">Click Refresh to load data.</div></div>
+      </div>
+    </div>
+
+    <!-- Customers -->
+    <div class="page" id="page-customers">
+      <div class="ph"><div class="ph-title">Customer Details</div><div class="ph-sub">Subscription status, expiry tracking and communication for all activated customers.</div></div>
+      <div class="filters" id="cf" style="margin-bottom:1.2rem">
+        <button class="fb active" onclick="setCF('all',this)">All</button>
+        <button class="fb" onclick="setCF('active',this)">Active</button>
+        <button class="fb" onclick="setCF('expiring',this)">Expiring Soon</button>
+        <button class="fb" onclick="setCF('expired',this)">Expired</button>
+      </div>
+      <div id="cust-list"><div class="empty">Loading…</div></div>
+    </div>
+
+    <!-- Email -->
+    <div class="page" id="page-email">
+      <div class="ph"><div class="ph-title">Email Configuration</div><div class="ph-sub">Configure SMTP to send automatic renewal reminders and expiry notifications.</div></div>
+
+      <div class="card">
+        <div class="card-title">SMTP Settings</div>
+        <div class="provider-btns">
+          <span style="font-size:.72rem;color:var(--muted);font-weight:500;align-self:center;margin-right:.2rem">Quick setup:</span>
+          <button class="btn btn-outline btn-sm" onclick="preset('gmail')">Gmail</button>
+          <button class="btn btn-outline btn-sm" onclick="preset('outlook')">Outlook</button>
+          <button class="btn btn-outline btn-sm" onclick="preset('yahoo')">Yahoo</button>
+          <button class="btn btn-outline btn-sm" onclick="preset('brevo')">Brevo (free)</button>
+          <button class="btn btn-outline btn-sm" onclick="preset('sendgrid')">SendGrid (free)</button>
+        </div>
+        <div class="gmail-guide" id="gmail-guide">
+          <strong style="color:var(--warn);display:block;margin-bottom:.4rem">⚠ Gmail requires an App Password</strong>
+          <ol style="padding-left:1.3rem;color:var(--muted)">
+            <li>Go to <strong>myaccount.google.com</strong> → Security</li>
+            <li>Enable <strong>2-Step Verification</strong></li>
+            <li>Search <strong>App Passwords</strong> → Create one named "DTC Portal"</li>
+            <li>Paste the 16-character password into the Password field below</li>
+          </ol>
+        </div>
+        <div class="form-row"><div class="form-group"><label>SMTP Host</label><input id="em-host" placeholder="smtp.gmail.com"/></div><div class="form-group"><label>Port</label><input id="em-port" placeholder="587"/></div></div>
+        <div class="form-row"><div class="form-group"><label>Email Address</label><input type="email" id="em-user" placeholder="you@gmail.com"/></div><div class="form-group"><label>App Password</label><input type="password" id="em-pass" placeholder="••••••••••"/></div></div>
+        <div class="form-row">
+          <div class="form-group"><label>Sender Name</label><input id="em-name" placeholder="DTC Digital Tools Corner"/></div>
+          <div class="form-group" style="display:flex;align-items:flex-end;padding-bottom:.1rem">
+            <label class="toggle"><input type="checkbox" id="em-ssl"/><div class="toggle-track"><div class="toggle-thumb"></div></div><span style="font-size:.82rem;color:var(--text);margin-left:.4rem;font-weight:500">SSL (port 465)</span></label>
+          </div>
+        </div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="saveEC()">Save Configuration</button>
+          <button class="btn btn-outline" onclick="testEmail()"><span id="test-txt">Send Test Email</span></button>
+        </div>
+        <div class="msg ok" id="em-ok"></div><div class="msg err" id="em-err"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Automatic Schedule</div>
+        <div style="display:flex;flex-direction:column;gap:.6rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.7rem .9rem;background:#f8fafc;border:1px solid var(--border);border-radius:8px">
+            <div><div style="font-size:.82rem;font-weight:600;color:var(--text)">5-Day Renewal Reminder</div><div style="font-size:.71rem;color:var(--muted);margin-top:.1rem">Sent automatically when 5 days remain on the subscription</div></div>
+            <span class="badge b-act">✓ Active</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.7rem .9rem;background:#f8fafc;border:1px solid var(--border);border-radius:8px">
+            <div><div style="font-size:.82rem;font-weight:600;color:var(--text)">Subscription Expiry Notice</div><div style="font-size:.71rem;color:var(--muted);margin-top:.1rem">Sent automatically on the day the subscription expires</div></div>
+            <span class="badge b-act">✓ Active</span>
+          </div>
+        </div>
+        <p style="font-size:.71rem;color:var(--muted2);margin-top:.9rem;line-height:1.6">The server checks for upcoming expirations every hour. Each email is sent only once per event per customer.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Email Log</div>
+        <div id="email-log-wrap"><div class="empty">No emails sent yet.</div></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Decline Modal -->
+<div class="modal-overlay" id="decline-modal" onclick="if(event.target===this)closeDecline()">
+  <div class="modal">
+    <div class="modal-title">Decline Activation Request</div>
+    <div class="modal-sub">This will notify the customer that their request has been declined. Please provide a reason so they know what to correct.</div>
+    <input type="hidden" id="decline-token"/>
+    <div class="form-group">
+      <label>Decline Reason</label>
+      <textarea id="decline-reason" rows="3" placeholder="e.g. The Organization ID provided does not match our records. Please verify your ID from Settings → Account and resubmit."></textarea>
+    </div>
+    <div style="font-size:.75rem;color:var(--muted);line-height:1.6;margin-top:.2rem">This message will be displayed to the customer on their activation page.</div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeDecline()">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmDecline()">Decline Request</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let adminKey='', allTokens={}, emailLog=[], dashFilter='all', custFilter='all';
+
+// ── Login ────────────────────────────────────────────────────────────────────
+async function login() {
+  const key = document.getElementById('admin-key').value.trim();
+  if (!key) return;
+  try {
+    const r = await fetch('/admin/sessions-data', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ adminKey:key }) });
+    const d = await r.json();
+    if (d.error) { document.getElementById('login-err').classList.add('show'); return; }
+    adminKey=key; allTokens=d.tokens; emailLog=d.emailLog||[];
+    document.getElementById('login-wrap').style.display='none';
+    document.getElementById('app').style.display='flex';
+    renderDash(); renderCustomers(); loadEC(); renderEL();
+  } catch { document.getElementById('login-err').classList.add('show'); }
+}
+
+function nav(page, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+async function loadData() {
+  const r = await fetch('/admin/sessions-data', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ adminKey }) });
+  const d = await r.json();
+  if (d.error) return;
+  allTokens=d.tokens; emailLog=d.emailLog||[];
+  renderDash(); renderCustomers(); renderEL();
+}
+
+// ── Status helpers ────────────────────────────────────────────────────────────
+function getLinkStatus(t) {
+  if (t.declined)  return 'declined';
+  if (t.approved)  return 'activated';
+  if (t.used)      return 'submitted';
+  if (t.expiresAt && new Date()>new Date(t.expiresAt)) return 'expired';
+  if ((t.accessCount||0)>0) return 'accessed';
+  return 'pending';
+}
+function getSubStatus(t) {
+  if (!t.subscriptionExpiresAt) return null;
+  const d = daysUntil(t.subscriptionExpiresAt);
+  return d<0?'expired':d<=5?'danger':d<=30?'soon':'ok';
+}
+function daysUntil(iso){ return Math.ceil((new Date(iso)-new Date())/(1000*60*60*24)); }
+function statusBadge(s) {
+  const m={pending:['b-pend','○ Not Opened'],accessed:['b-acc','◎ Opened'],submitted:['b-sub','⏳ Submitted'],activated:['b-act','✓ Activated'],expired:['b-exp','✕ Expired'],declined:['b-dec','✕ Declined']};
+  const[c,l]=m[s]||m.pending;
+  return `<span class="badge ${c}"><span class="b-dot"></span>${l}</span>`;
+}
+
+// ── Dashboard ─────────────────────────────────────────────────────────────────
+function setFilter(f,btn){ dashFilter=f; document.querySelectorAll('#df .fb').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); renderDash(); }
+
+function renderDash() {
+  const entries = Object.entries(allTokens).map(([tok,t])=>[tok,t,getLinkStatus(t)]).sort((a,b)=>new Date(b[1].createdAt||0)-new Date(a[1].createdAt||0));
+  const cnt={all:0,pending:0,accessed:0,submitted:0,activated:0,expired:0,declined:0};
+  entries.forEach(([,,s])=>{ cnt.all++; cnt[s]=(cnt[s]||0)+1; });
+  document.getElementById('s-all').textContent = cnt.all;
+  document.getElementById('s-pend').textContent= cnt.pending;
+  document.getElementById('s-acc').textContent = cnt.accessed;
+  document.getElementById('s-sub').textContent = cnt.submitted;
+  document.getElementById('s-act').textContent = cnt.activated;
+  document.getElementById('s-exp').textContent = (cnt.expired||0)+(cnt.declined||0);
+
+  const filtered = dashFilter==='all'?entries:entries.filter(([,,s])=>s===dashFilter);
+  const wrap = document.getElementById('dash-tbl');
+  if (!filtered.length) { wrap.innerHTML='<div class="empty">No links match this filter.</div>'; return; }
+
+  const rows = filtered.map(([token,t,status])=>{
+    const subSt = getSubStatus(t);
+    const rowCls = subSt==='soon'||subSt==='danger'?'row-expiring':subSt==='expired'?'row-expired-sub':status==='declined'?'row-declined':'';
+    const org = t.orgId ? `<div class="orgid-wrap"><span class="orgid-txt">${esc(t.orgId)}</span><button class="icopy" onclick="copyText('${esc(t.orgId)}',this)">Copy</button></div>` : '<span style="color:var(--muted2);font-size:.65rem">Not submitted</span>';
+
+    // Sub expiry
+    let subCell='<span style="color:var(--muted2);font-size:.65rem">—</span>';
+    if (t.subscriptionExpiresAt) {
+      const days=daysUntil(t.subscriptionExpiresAt);
+      const cls=subSt==='expired'?'danger':subSt==='danger'?'danger':subSt==='soon'?'soon':'ok';
+      const flag=(subSt==='soon'||subSt==='danger')?`<div class="exp-flag ${subSt==='danger'?'danger':'soon'}">⚠ ${days<=0?'Expired':days+'d left'}</div>`:'';
+      subCell=`<div class="sub-exp ${cls}"><div class="days">${days<=0?'Expired':days+' days left'}</div><div class="date">${fmt(t.subscriptionExpiresAt)}</div>${flag}</div>`;
+    }
+
+    // Action
+    let actionCell='<span style="color:var(--muted2);font-size:.65rem">—</span>';
+    if (t.approved) actionCell=`<div><span class="badge b-act">✓ Activated</span><div class="approved-ts">✓ ${fmtFull(new Date(t.approvedAt))}</div></div>`;
+    else if (t.declined) actionCell=`<div><span class="badge b-dec">✕ Declined</span><div class="declined-ts">✕ ${fmtFull(new Date(t.declinedAt))}</div></div>`;
+    else if (status==='submitted') actionCell=`<div class="action-wrap"><button class="approve-btn" id="ab-${token}" onclick="approve('${token}')">✓ Approve</button><button class="decline-btn" id="db-${token}" onclick="openDecline('${token}')">✕ Decline</button></div>`;
+
+    const ac=t.accessCount||0;
+    const hasLog=(t.accessLog||[]).length>0;
+    const logRows=(t.accessLog||[]).slice(-10).map(e=>`<div class="log-entry"><span class="le-t">${fmtFull(new Date(e.at))}</span><span class="le-ip">${esc(e.ip)}</span><span class="le-ua" title="${esc(e.userAgent)}">${esc(parseUA(e.userAgent))}</span></div>`).join('');
+
+    return `<tr class="${rowCls}">
+      <td><div class="cust-name">${esc(t.customerName)}</div><div class="cust-meta">${esc(t.packageType)}</div>${t.email?`<div class="cust-meta">${esc(t.email)}</div>`:''}</td>
+      <td>${statusBadge(status)}</td>
+      <td>${org}</td>
+      <td>
+        <div class="tl-cell">
+          <div class="tl-row"><span class="tl-lbl">Created</span><span class="tl-val">${fmt(t.createdAt)}</span></div>
+          <div class="tl-row"><span class="tl-lbl">1st open</span><span class="tl-val">${t.firstAccessedAt?fmt(t.firstAccessedAt):'—'}</span></div>
+          ${t.submittedAt?`<div class="tl-row"><span class="tl-lbl">Submitted</span><span class="tl-val">${fmt(t.submittedAt)}</span></div>`:''}
+          ${t.approvedAt?`<div class="tl-row"><span class="tl-lbl">Activated</span><span class="tl-val green">${fmt(t.approvedAt)}</span></div>`:''}
+          ${t.declinedAt?`<div class="tl-row"><span class="tl-lbl">Declined</span><span class="tl-val red">${fmt(t.declinedAt)}</span></div>`:''}
+        </div>
+        <span class="acount ${ac>0?'':'zero'}">👁 ${ac} open${ac!==1?'s':''}</span>
+        ${hasLog?`<button class="xbtn" id="xb-${token}" onclick="toggleLog('${token}')">▸ View access log</button>`:''}
+      </td>
+      <td>${subCell}</td>
+      <td>${t.wechat?`<span style="font-size:.72rem;font-family:'JetBrains Mono',monospace;color:var(--text)">${esc(t.wechat)}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
+      <td>${actionCell}</td>
+    </tr>
+    <tr class="log-row" id="log-row-${token}">
+      <td colspan="7"><div class="log-inner">
+        <div class="log-hdr"><span>Time</span><span>IP Address</span><span>Device</span></div>
+        ${logRows||'<div style="color:var(--muted2);font-size:.63rem">No access records.</div>'}
+      </div></td>
+    </tr>`;
+  }).join('');
+
+  wrap.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>Customer</th><th>Status</th><th>Organization ID</th><th>Timeline</th><th>Subscription</th><th>WeChat</th><th>Action</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+// ── Approve ───────────────────────────────────────────────────────────────────
+async function approve(token) {
+  const btn=document.getElementById(`ab-${token}`);
+  if(btn){btn.textContent='…';btn.disabled=true;}
+  const r=await fetch('/admin/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({adminKey,token})});
+  const d=await r.json();
+  if(d.success) loadData();
+  else{if(btn){btn.textContent='✓ Approve';btn.disabled=false;}alert('Failed. Please try again.');}
+}
+
+// ── Decline modal ─────────────────────────────────────────────────────────────
+function openDecline(token) {
+  document.getElementById('decline-token').value=token;
+  document.getElementById('decline-reason').value='The Organization ID provided does not match our records. Please verify your ID from Settings → Account in Claude and resubmit with a new link.';
+  document.getElementById('decline-modal').classList.add('open');
+}
+function closeDecline() { document.getElementById('decline-modal').classList.remove('open'); }
+
+async function confirmDecline() {
+  const token  = document.getElementById('decline-token').value;
+  const reason = document.getElementById('decline-reason').value.trim();
+  if (!reason) { alert('Please provide a reason for declining.'); return; }
+  const r=await fetch('/admin/decline',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({adminKey,token,reason})});
+  const d=await r.json();
+  closeDecline();
+  if(d.success) loadData();
+  else alert('Failed to decline. Please try again.');
+}
+
+// ── Log toggle ────────────────────────────────────────────────────────────────
+function toggleLog(token){const row=document.getElementById('log-row-'+token);const btn=document.getElementById('xb-'+token);const open=row.classList.toggle('open');if(btn)btn.textContent=open?'▾ Hide access log':'▸ View access log';}
+
+// ── Customers page ────────────────────────────────────────────────────────────
+function setCF(f,btn){custFilter=f;document.querySelectorAll('#cf .fb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCustomers();}
+
+function renderCustomers() {
+  const activated=Object.entries(allTokens).filter(([,t])=>t.approved&&t.email).sort((a,b)=>daysUntil(a[1].subscriptionExpiresAt||'9999')-daysUntil(b[1].subscriptionExpiresAt||'9999'));
+  const expiring=activated.filter(([,t])=>{const d=daysUntil(t.subscriptionExpiresAt||'9999');return d>=0&&d<=30;}).length;
+  const nb=document.getElementById('nb-exp');
+  nb.textContent=expiring; nb.style.display=expiring>0?'':'none';
+
+  const filtered=activated.filter(([,t])=>{
+    if(custFilter==='all')return true;
+    const st=getSubStatus(t);
+    if(custFilter==='active')   return st==='ok';
+    if(custFilter==='expiring') return st==='soon'||st==='danger';
+    if(custFilter==='expired')  return st==='expired';
+    return true;
+  });
+
+  const wrap=document.getElementById('cust-list');
+  if(!filtered.length){wrap.innerHTML='<div class="empty">No customers match this filter.</div>';return;}
+
+  wrap.innerHTML=filtered.map(([token,t])=>{
+    const subSt=getSubStatus(t);
+    const days=t.subscriptionExpiresAt?daysUntil(t.subscriptionExpiresAt):null;
+    const cardCls='cust-card'+(subSt==='soon'||subSt==='danger'?' expiring':subSt==='expired'?' expired-sub':'');
+    const total=t.subscriptionDays||30;
+    const pct=Math.min(100,Math.max(0,((total-(days||0))/total)*100));
+    const barColor=subSt==='expired'||subSt==='danger'?'#dc2626':subSt==='soon'?'#d97706':'#16a34a';
+    const expBadge=days===null?'':days<0?`<span class="badge b-exp">✕ Expired</span>`:days<=5?`<span class="badge" style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626">⚠ ${days}d left</span>`:days<=30?`<span class="badge" style="background:#fffbeb;border:1px solid #fde68a;color:#d97706">⏰ ${days}d left</span>`:`<span class="badge b-act">✓ Active · ${days}d left</span>`;
+    const expDate=t.subscriptionExpiresAt?new Date(t.subscriptionExpiresAt).toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'}):'—';
+    const dCls=subSt==='expired'||subSt==='danger'?'red':subSt==='soon'?'warn':'green';
+    return `<div class="${cardCls}">
+      <div class="cust-top"><div><div class="cust-nm">${esc(t.customerName)}</div><div class="cust-pk">${esc(t.packageType)}</div></div><div>${expBadge}</div></div>
+      <div class="cust-grid">
+        <div><div class="cf-lbl">Email</div><div class="cf-val">${esc(t.email||'—')}</div></div>
+        <div><div class="cf-lbl">WeChat</div><div class="cf-val">${esc(t.wechat||'—')}</div></div>
+        <div><div class="cf-lbl">Organization ID</div><div style="display:flex;align-items:flex-start;gap:.3rem"><div class="cf-val" style="flex:1">${esc((t.orgId||'—').slice(0,22))}…</div>${t.orgId?`<button class="icopy btn-sm" onclick="copyText('${esc(t.orgId)}',this)">Copy</button>`:''}</div></div>
+        <div><div class="cf-lbl">Activated On</div><div class="cf-val">${t.approvedAt?new Date(t.approvedAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—'}</div></div>
+        <div><div class="cf-lbl">Expires On</div><div class="cf-val ${dCls}">${expDate}</div></div>
+        <div><div class="cf-lbl">Days Remaining</div><div class="cf-val ${dCls}">${days===null?'—':days<=0?'Expired':days+' days'}</div></div>
+      </div>
+      <div class="exp-bar-wrap"><div class="exp-bar-label"><span>Subscription Usage</span><span style="font-weight:600">${Math.round(pct)}% used</span></div><div class="exp-bar"><div class="exp-bar-fill" style="width:${pct}%;background:${barColor}"></div></div></div>
+      <div class="email-actions">
+        <button class="btn btn-ghost-blue btn-sm" onclick="sendReminder('${token}','reminder')">📧 Send 5-day Reminder</button>
+        <button class="btn btn-outline btn-sm" style="border-color:var(--error-border);color:var(--error)" onclick="sendReminder('${token}','expired')">📧 Send Expiry Notice</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function sendReminder(token,type){
+  const r=await fetch('/admin/send-reminder',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({adminKey,token,type})});
+  const d=await r.json();
+  alert(d.ok?'✓ Email sent successfully.':'✕ Failed: '+d.error);
+  if(d.ok)loadData();
+}
+
+// ── Generate ──────────────────────────────────────────────────────────────────
+async function generateLink() {
+  const name=document.getElementById('cust-name').value.trim();
+  const pkg =document.getElementById('pkg').value;
+  const err =document.getElementById('gen-err');
+  err.classList.remove('show');
+  if(!name||!pkg){err.textContent='Please fill in both fields.';err.classList.add('show');return;}
+  const r=await fetch('/admin/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({adminKey,customerName:name,packageType:pkg})});
+  const d=await r.json();
+  if(d.error){err.textContent=d.error;err.classList.add('show');return;}
+  document.getElementById('gen-link').textContent=d.link;
+  document.getElementById('link-result').classList.add('show');
+  document.getElementById('copy-btn').textContent='Copy';
+  document.getElementById('copy-btn').classList.remove('done');
+  loadData();
+}
+function copyGenLink(){navigator.clipboard.writeText(document.getElementById('gen-link').textContent).then(()=>{const b=document.getElementById('copy-btn');b.textContent='Copied ✓';b.classList.add('done');});}
+
+// ── Email config ──────────────────────────────────────────────────────────────
+const PRESETS={gmail:{host:'smtp.gmail.com',port:'587',note:true},outlook:{host:'smtp-mail.outlook.com',port:'587'},yahoo:{host:'smtp.mail.yahoo.com',port:'587'},brevo:{host:'smtp-relay.brevo.com',port:'587'},sendgrid:{host:'smtp.sendgrid.net',port:'587'}};
+function preset(p){const pr=PRESETS[p];if(!pr)return;document.getElementById('em-host').value=pr.host;document.getElementById('em-port').value=pr.port;document.getElementById('em-ssl').checked=false;document.getElementById('gmail-guide').style.display=pr.note?'block':'none';}
+async function loadEC(){const r=await fetch(`/admin/email-config?adminKey=${encodeURIComponent(adminKey)}`);const d=await r.json();if(d.error)return;document.getElementById('em-host').value=d.host||'';document.getElementById('em-port').value=d.port||'587';document.getElementById('em-user').value=d.user||'';document.getElementById('em-pass').value=d.pass||'';document.getElementById('em-name').value=d.fromName||'DTC Digital Tools Corner';document.getElementById('em-ssl').checked=d.secure||false;if(d.host==='smtp.gmail.com')document.getElementById('gmail-guide').style.display='block';}
+async function saveEC(){const config={host:document.getElementById('em-host').value.trim(),port:document.getElementById('em-port').value.trim()||'587',user:document.getElementById('em-user').value.trim(),pass:document.getElementById('em-pass').value,fromName:document.getElementById('em-name').value.trim()||'DTC Digital Tools Corner',secure:document.getElementById('em-ssl').checked};if(!config.host||!config.user||!config.pass){showM('em',false,'Please fill in Host, Email and Password.');return;}const r=await fetch('/admin/email-config',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({adminKey,config})});const d=await r.json();showM('em',d.success,d.success?'✓ Configuration saved.':'Failed.');}
+async function testEmail(){const to=document.getElementById('em-user').value.trim();if(!to){showM('em',false,'Save your configuration first.');return;}document.getElementById('test-txt').textContent='Sending…';const r=await fetch('/admin/test-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({adminKey,to})});const d=await r.json();document.getElementById('test-txt').textContent='Send Test Email';showM('em',d.ok,d.ok?`✓ Test email sent to ${to}.`:'✕ '+d.error+(d.error?.includes('timeout')?' — Use a Gmail App Password, not your regular password.':''));}
+function showM(p,ok,msg){const o=document.getElementById(p+'-ok'),e=document.getElementById(p+'-err');o.classList.remove('show');e.classList.remove('show');const el=ok?o:e;el.textContent=msg;el.classList.add('show');}
+
+function renderEL(){const wrap=document.getElementById('email-log-wrap');if(!emailLog.length){wrap.innerHTML='<div class="empty">No emails sent yet.</div>';return;}const rows=[...emailLog].reverse().slice(0,30).map(e=>`<tr><td>${fmtFull(new Date(e.sentAt))}</td><td>${esc(e.to)}</td><td>${esc(e.subject)}</td><td><span class="badge ${e.type?.includes('expired')?'b-exp':e.type?.includes('remind')||e.type?.includes('manual')?'b-sub':'b-pend'}">${esc(e.type||'—')}</span></td></tr>`).join('');wrap.innerHTML=`<table class="email-log-tbl"><thead><tr><th>Sent At</th><th>To</th><th>Subject</th><th>Type</th></tr></thead><tbody>${rows}</tbody></table>`;}
+
+// ── Utils ─────────────────────────────────────────────────────────────────────
+function fmt(iso){if(!iso)return'—';const d=new Date(iso);return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});}
+function fmtFull(d){return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+function parseUA(ua){if(!ua||ua==='unknown')return'Unknown';if(/iPhone/i.test(ua))return'📱 iPhone';if(/iPad/i.test(ua))return'📱 iPad';if(/Android/i.test(ua)&&/Mobile/i.test(ua))return'📱 Android';if(/Android/i.test(ua))return'📱 Tablet';if(/Windows/i.test(ua))return'🖥 Windows';if(/Mac/i.test(ua))return'🖥 Mac';return'🌐 Browser';}
+function copyText(text,btn){navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied ✓';btn.classList.add('done');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('done');},2000);});}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+</script>
+</body>
+</html>

@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Claude Activation — DTC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f0f4ff;
+      --white:#ffffff;
+      --blue:#2563eb;
+      --blue-dark:#1d4ed8;
+      --blue-light:#eff6ff;
+      --blue-mid:#dbeafe;
+      --border:#e2e8f0;
+      --border-focus:#93c5fd;
+      --text:#1e293b;
+      --muted:#64748b;
+      --muted2:#94a3b8;
+      --success:#16a34a;
+      --success-bg:#f0fdf4;
+      --success-border:#bbf7d0;
+      --error:#dc2626;
+      --error-bg:#fef2f2;
+      --error-border:#fecaca;
+      --warn:#d97706;
+      --warn-bg:#fffbeb;
+      --warn-border:#fde68a;
+      --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(37,99,235,.06);
+      --shadow-lg:0 4px 24px rgba(37,99,235,.12),0 1px 4px rgba(0,0,0,.06);
+    }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2.5rem 1rem 5rem;background-image:radial-gradient(ellipse at 20% 0%, rgba(37,99,235,.07) 0%, transparent 50%),radial-gradient(ellipse at 80% 100%, rgba(99,102,241,.05) 0%, transparent 50%)}
+
+    .wrap{width:100%;max-width:480px}
+
+    /* Brand */
+    .brand{text-align:center;margin-bottom:2rem;animation:fadeDown .5s ease both}
+    .brand-logo{display:inline-flex;align-items:center;gap:.6rem;margin-bottom:.4rem}
+    .brand-icon{width:40px;height:40px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(37,99,235,.3)}
+    .brand-icon svg{width:22px;height:22px}
+    .brand-name{font-size:1.5rem;font-weight:700;color:var(--text);letter-spacing:-.025em}
+    .brand-tagline{font-size:.82rem;color:var(--muted);font-weight:500}
+    .brand-sub{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);margin-top:.15rem}
+
+    /* Card */
+    .card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:2rem;box-shadow:var(--shadow-lg);animation:fadeUp .6s ease both .1s;position:relative;overflow:hidden}
+    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),#6366f1)}
+
+    /* Badge */
+    .service-badge{display:inline-flex;align-items:center;gap:.4rem;background:var(--blue-light);border:1px solid var(--blue-mid);border-radius:99px;padding:.3rem .9rem;font-size:.72rem;font-weight:600;color:var(--blue);margin-bottom:1.2rem}
+    .badge-dot{width:6px;height:6px;background:var(--blue);border-radius:50%;animation:pulse 2s infinite}
+
+    .card-title{font-size:1.25rem;font-weight:700;margin-bottom:.35rem;color:var(--text);letter-spacing:-.02em}
+    .card-sub{font-size:.83rem;color:var(--muted);line-height:1.65;margin-bottom:1.6rem}
+    .card-sub strong{color:var(--text)}
+
+    /* Instructions */
+    .instructions{background:#f8faff;border:1px solid var(--blue-mid);border-radius:10px;padding:.95rem 1.1rem;margin-bottom:1.5rem;font-size:.8rem;color:var(--muted);line-height:1.8}
+    .instructions strong{color:var(--text);display:block;margin-bottom:.4rem;font-size:.82rem;font-weight:600}
+    .instructions ol{padding-left:1.3rem}
+    .instructions li{margin-bottom:.3rem}
+    .instructions li span{color:var(--text);font-weight:500}
+    .instructions .example{margin-top:.75rem;padding:.6rem .85rem;background:var(--white);border:1px solid var(--border);border-radius:7px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.02em}
+    .instructions .example span{color:var(--blue);font-weight:500}
+    .instructions .url-row{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;background:var(--white);border:1px solid var(--border);border-radius:7px;padding:.5rem .7rem .5rem .85rem}
+    .instructions .url-text{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--blue);font-weight:500;flex:1;word-break:break-all}
+    .instructions .url-copy{flex-shrink:0;background:var(--blue-light);border:1.5px solid var(--blue-mid);border-radius:6px;padding:.22rem .65rem;font-size:.65rem;font-family:'Inter',sans-serif;color:var(--blue);cursor:pointer;font-weight:700;transition:all .18s;white-space:nowrap}
+    .instructions .url-copy:hover{background:var(--blue-mid)}
+    .instructions .url-copy.copied{background:#dcfce7;border-color:#86efac;color:#15803d}
+
+    /* Form */
+    .form-group{margin-bottom:1.1rem}
+    label{display:block;font-size:.72rem;font-weight:600;color:var(--text);margin-bottom:.4rem}
+
+    .input-wrap{position:relative}
+    .input-wrap input{width:100%;background:var(--white);border:1.5px solid var(--border);border-radius:9px;padding:.78rem 1rem .78rem 2.7rem;font-family:'Inter',sans-serif;font-size:.88rem;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s}
+    .input-wrap input::placeholder{color:var(--muted2)}
+    .input-wrap input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+    .input-wrap input.ok{border-color:var(--success)}
+    .input-wrap input.err{border-color:var(--error);box-shadow:0 0 0 3px rgba(220,38,38,.08)}
+    .input-icon{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--muted2);font-size:.85rem;pointer-events:none}
+
+    .field-hint{font-size:.7rem;color:var(--muted2);margin-top:.35rem;padding-left:.1rem}
+    .field-error{font-size:.73rem;color:var(--error);margin-top:.35rem;padding-left:.1rem;display:none}
+    .field-error.show{display:block;animation:slideIn .18s ease}
+
+    /* ChatGPT session textarea */
+    .session-textarea{width:100%;background:var(--white);border:1.5px solid var(--border);border-radius:9px;padding:.75rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text);outline:none;resize:vertical;min-height:110px;transition:border-color .2s,box-shadow .2s;line-height:1.6}
+    .session-textarea::placeholder{color:var(--muted2);font-family:'Inter',sans-serif;font-size:.82rem}
+    .session-textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+    .session-textarea.ok{border-color:var(--success);box-shadow:0 0 0 3px rgba(22,163,74,.1)}
+    .session-textarea.err{border-color:var(--error);box-shadow:0 0 0 3px rgba(220,38,38,.08)}
+
+    /* Session validation result */
+    .session-result{display:none;border-radius:10px;padding:.85rem 1rem;margin-top:.6rem;font-size:.79rem;line-height:1.7}
+    .session-result.show{display:block;animation:slideIn .2s ease}
+    .session-result.ok{background:var(--success-bg);border:1.5px solid var(--success-border);color:#14532d}
+    .session-result.err{background:var(--error-bg);border:1.5px solid var(--error-border);color:#7f1d1d}
+    .session-result.warn{background:var(--warn-bg);border:1.5px solid var(--warn-border);color:#78350f}
+    .sr-title{font-weight:700;margin-bottom:.4rem;font-size:.82rem;display:flex;align-items:center;gap:.4rem}
+    .sr-row{display:flex;align-items:center;gap:.5rem;font-size:.76rem;margin-bottom:.2rem}
+    .sr-row:last-child{margin-bottom:0}
+    .sr-key{color:inherit;opacity:.7;min-width:80px;font-family:'JetBrains Mono',monospace;font-size:.7rem}
+    .sr-val{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:600}
+    .sr-badge{display:inline-block;padding:.1rem .45rem;border-radius:5px;font-size:.65rem;font-weight:700;margin-left:.3rem}
+    .sr-badge.green{background:#dcfce7;color:#15803d;border:1px solid #86efac}
+    .sr-badge.red{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
+    .sr-warning{margin-top:.55rem;padding:.55rem .75rem;background:rgba(220,38,38,.08);border-radius:7px;font-size:.75rem;font-weight:600;color:#b91c1c;border:1px solid #fca5a5}
+    .session-note{margin-top:.55rem;padding:.6rem .85rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;font-size:.74rem;color:#15803d;line-height:1.65}
+    .session-note strong{font-weight:700}
+
+    .divider{height:1px;background:var(--border);margin:1.4rem 0}
+
+    /* Submit */
+    .btn-submit{width:100%;background:var(--blue);color:#fff;border:none;border-radius:10px;padding:.9rem;font-family:'Inter',sans-serif;font-size:.92rem;font-weight:600;cursor:pointer;letter-spacing:.01em;transition:background .2s,transform .15s,box-shadow .2s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+    .btn-submit:hover:not(:disabled){background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,99,235,.3)}
+    .btn-submit:disabled{background:#93c5fd;cursor:not-allowed;transform:none;box-shadow:none}
+    .btn-submit .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none}
+    .btn-submit.loading .btn-text{display:none}
+    .btn-submit.loading .spinner{display:block}
+
+    /* Screens */
+    .screen{display:none}.screen.active{display:block}
+    #screen-loading{text-align:center;padding:2.5rem 0}
+    #screen-invalid,#screen-declined,#screen-processing,#screen-activated{text-align:center}
+
+    .mini-loader{width:32px;height:32px;border:2.5px solid var(--blue-mid);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:2rem auto 1rem}
+
+    /* State icons */
+    .state-icon{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1.4rem}
+    .si-success{background:var(--success-bg);border:2px solid var(--success-border)}
+    .si-error  {background:var(--error-bg);border:2px solid var(--error-border)}
+    .si-warn   {background:var(--warn-bg);border:2px solid var(--warn-border)}
+
+    /* Checkmark SVG */
+    .check-ring{width:72px;height:72px;margin:0 auto 1.4rem;display:block}
+    .check-ring circle{stroke-dasharray:220;stroke-dashoffset:220;animation:drawC .7s ease forwards .1s}
+    .check-ring polyline{stroke-dasharray:120;stroke-dashoffset:120;animation:drawK .45s ease forwards .75s}
+
+    .state-title{font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:.45rem;letter-spacing:-.02em}
+    .state-sub{font-size:.83rem;color:var(--muted);line-height:1.7;margin-bottom:1.4rem}
+
+    /* Orbit spinner */
+    .orbit{width:80px;height:80px;margin:0 auto 1.8rem;position:relative}
+    .orbit-ring{width:80px;height:80px;border-radius:50%;border:2px solid var(--blue-mid);position:absolute;top:0;left:0}
+    .orbit-ring::after{content:'';width:10px;height:10px;background:var(--blue);border-radius:50%;position:absolute;top:-5px;left:50%;transform:translateX(-50%);box-shadow:0 0 8px rgba(37,99,235,.5)}
+    .orbit-ring.r1{animation:orbit1 2s linear infinite}
+    .orbit-ring.r2{width:52px;height:52px;top:14px;left:14px;border-color:#bfdbfe;animation:orbit2 1.4s linear infinite reverse;opacity:.7}
+    .orbit-ring.r2::after{width:7px;height:7px;top:-3.5px;background:#93c5fd;box-shadow:none}
+    .orbit-center{width:32px;height:32px;border-radius:50%;background:var(--blue-light);border:2px solid var(--blue-mid);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;font-size:.85rem}
+
+    /* Order card */
+    .order-card{background:#f8faff;border:1px solid var(--border);border-radius:11px;padding:1rem 1.2rem;text-align:left;margin-bottom:1rem}
+    .oc-row{display:flex;justify-content:space-between;align-items:flex-start;padding:.3rem 0;border-bottom:1px solid var(--border);font-size:.78rem;gap:.5rem}
+    .oc-row:last-child{border-bottom:none;padding-bottom:0}
+    .oc-row:first-child{padding-top:0}
+    .oc-label{color:var(--muted);font-size:.72rem;font-weight:500;flex-shrink:0}
+    .oc-value{font-family:'JetBrains Mono',monospace;font-size:.71rem;color:var(--text);text-align:right;word-break:break-all}
+
+    /* Status pill */
+    .pill{display:inline-flex;align-items:center;gap:.35rem;padding:.22rem .7rem;border-radius:99px;font-size:.68rem;font-weight:600}
+    .pill-proc{background:#eff6ff;border:1px solid #bfdbfe;color:var(--blue)}
+    .pill-proc .pd{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:pulse 1.5s infinite}
+    .pill-active{background:var(--success-bg);border:1px solid var(--success-border);color:var(--success)}
+
+    /* Activation banner */
+    .act-banner{background:var(--success-bg);border:1px solid var(--success-border);border-radius:10px;padding:.9rem 1.1rem;margin-bottom:1rem;text-align:left}
+    .act-banner-label{font-size:.67rem;text-transform:uppercase;letter-spacing:.1em;color:var(--success);font-weight:700;margin-bottom:.5rem}
+    .act-banner-row{display:flex;justify-content:space-between;font-size:.76rem;margin-bottom:.22rem}
+    .act-banner-row:last-child{margin-bottom:0}
+    .act-banner-row span:first-child{color:var(--muted)}
+    .act-banner-row span:last-child{font-family:'JetBrains Mono',monospace;color:var(--text);font-weight:500}
+
+    /* Decline banner */
+    .decline-banner{background:var(--error-bg);border:1px solid var(--error-border);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1rem;text-align:left}
+    .decline-banner-title{font-size:.78rem;font-weight:700;color:var(--error);margin-bottom:.5rem}
+    .decline-banner-msg{font-size:.8rem;color:#7f1d1d;line-height:1.65}
+
+    /* Check pro steps */
+    .check-pro{background:#f8faff;border:1px solid var(--blue-mid);border-radius:11px;padding:1rem 1.15rem;margin-bottom:1rem;text-align:left}
+    .check-pro-title{font-size:.76rem;font-weight:700;color:var(--text);margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem}
+    .cp-step{display:flex;align-items:flex-start;gap:.6rem;font-size:.77rem;color:var(--muted);line-height:1.5;margin-bottom:.35rem}
+    .cp-step:last-child{margin-bottom:0}
+    .cp-num{width:20px;height:20px;border-radius:50%;background:var(--blue-light);border:1.5px solid var(--blue-mid);color:var(--blue);font-size:.63rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+    /* Timeline */
+    .timeline{display:flex;flex-direction:column;text-align:left;margin-top:.6rem}
+    .tl-item{display:flex;gap:.7rem;align-items:flex-start;position:relative}
+    .tl-item:not(:last-child)::after{content:'';position:absolute;left:9px;top:20px;width:1px;height:calc(100% + 2px);background:var(--border)}
+    .tl-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;margin-top:1px;position:relative;z-index:1}
+    .tl-dot.done{background:var(--success-bg);border:1.5px solid var(--success-border);color:var(--success)}
+    .tl-dot.spin{background:var(--blue-light);border:1.5px solid var(--blue-mid);color:var(--blue)}
+    .tl-dot.wait{background:#f8fafc;border:1.5px solid var(--border);color:var(--muted2)}
+    .tl-body{padding:.05rem 0 1rem}
+    .tl-title{font-size:.8rem;font-weight:600;color:var(--text);margin-bottom:.06rem}
+    .tl-title.dim{color:var(--muted)}
+    .tl-sub{font-size:.71rem;color:var(--muted)}
+
+    /* Pulse bars */
+    .pulse-bars{display:flex;align-items:flex-end;gap:4px;height:22px;margin:0 auto 1.3rem;width:fit-content}
+    .bar{width:5px;border-radius:3px;background:var(--blue-mid);animation:barPulse 1.2s ease-in-out infinite}
+    .bar:nth-child(1){animation-delay:0s;height:9px}.bar:nth-child(2){animation-delay:.15s;height:16px}.bar:nth-child(3){animation-delay:.3s;height:22px}.bar:nth-child(4){animation-delay:.45s;height:16px}.bar:nth-child(5){animation-delay:.6s;height:9px}
+
+    /* Confetti */
+    .confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden;display:none}
+    .confetti.on{display:block}
+    .cdot{position:absolute;border-radius:50%;animation:cfloat linear forwards}
+
+    .footer{text-align:center;margin-top:1.5rem;font-size:.7rem;color:var(--muted2)}
+    .footer a{color:var(--muted2);text-decoration:none;transition:color .2s}
+    .footer a:hover{color:var(--blue)}
+
+    @keyframes fadeDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    @keyframes slideIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    @keyframes orbit1{to{transform:rotate(360deg)}}
+    @keyframes orbit2{to{transform:rotate(360deg)}}
+    @keyframes drawC{to{stroke-dashoffset:0}}
+    @keyframes drawK{to{stroke-dashoffset:0}}
+    @keyframes barPulse{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
+    @keyframes cfloat{0%{opacity:1;transform:translateY(0) rotate(0deg)}100%{opacity:0;transform:translateY(-140px) rotate(720deg)}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <div class="brand-logo">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+      </div>
+      <div class="brand-name">DTC</div>
+    </div>
+    <div class="brand-tagline">Digital Tools Corner</div>
+    <div class="brand-sub" id="brand-sub">Activation Portal</div>
+  </div>
+
+  <div class="card">
+    <div class="confetti" id="confetti"></div>
+
+    <!-- Loading -->
+    <div id="screen-loading" class="screen active">
+      <div class="mini-loader"></div>
+      <p style="color:var(--muted);font-size:.83rem;margin-top:.5rem">Verifying your activation link…</p>
+    </div>
+
+    <!-- Invalid -->
+    <div id="screen-invalid" class="screen">
+      <div class="state-icon si-error">⚠</div>
+      <div class="state-title">Link Unavailable</div>
+      <p class="state-sub" id="invalid-msg">This activation link is invalid or has expired. Please contact support for a new link.</p>
+    </div>
+
+    <!-- Declined -->
+    <div id="screen-declined" class="screen">
+      <div class="state-icon si-error">✕</div>
+      <div class="state-title">Request Declined</div>
+      <p class="state-sub">Your activation request could not be processed.</p>
+      <div class="decline-banner">
+        <div class="decline-banner-title">⚠ Declined by DTC System</div>
+        <div class="decline-banner-msg" id="decline-reason-msg">The details provided could not be verified. Please ensure you have entered the correct Organization ID and try again with a new link.</div>
+      </div>
+      <p style="font-size:.78rem;color:var(--muted);line-height:1.65">If you believe this is an error, please contact us on WeChat or at <a href="/cdn-cgi/l/email-protection#6e1d1b1e1e011c1a2e0a1a0d400d0103" style="color:var(--blue)"><span class="__cf_email__" data-cfemail="097a7c7979667b7d496d7d6a276a6664">[email&#160;protected]</span></a>.</p>
+    </div>
+
+    <!-- Form -->
+    <div id="screen-form" class="screen">
+      <div class="service-badge"><div class="badge-dot"></div><span id="pkg-label">Pro</span></div>
+      <div class="card-title">Activate Your Package</div>
+      <p class="card-sub">Hello <strong id="cust-name">there</strong>! Please provide the details below to activate your package. This will only take a moment.</p>
+
+      <div class="instructions" id="instructions-box">
+        <strong>📋 How to Locate Your Organization ID</strong>
+        <ol>
+          <li>Open <span>claude.ai</span> and sign in to your account.</li>
+          <li>Click your <span>profile icon</span> in the bottom-left corner of the screen.</li>
+          <li>Select <span>Settings</span>, then click on <span>Account</span>.</li>
+          <li>Your Organization ID is displayed in this format:</li>
+        </ol>
+        <div class="example"><span>714fe120-d7yd-4da9-bb53-84c42f10wac7</span></div>
+      </div>
+
+      <!-- Standard org-id field (Claude / Grok) -->
+      <div id="org-id-section">
+        <div class="form-group">
+          <label for="org-id">Organization ID</label>
+          <div class="input-wrap">
+            <span class="input-icon">#</span>
+            <input type="text" id="org-id" placeholder="e.g. 714fe120-d7yd-4da9-bb53-84c42f10wac7"
+              oninput="validateOrgId()" autocomplete="off" spellcheck="false" maxlength="36"/>
+          </div>
+          <div class="field-hint">Format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</div>
+          <div class="field-error" id="err-orgid"></div>
+        </div>
+      </div>
+
+      <!-- ChatGPT session data field -->
+      <div id="chatgpt-session-section" style="display:none">
+        <div class="form-group">
+          <label for="session-data">ChatGPT Session Data</label>
+          <textarea id="session-data" class="session-textarea"
+            placeholder="Paste the full JSON content here…"
+            oninput="validateSessionData()" spellcheck="false"></textarea>
+          <div id="session-result" class="session-result"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="wechat">WeChat ID</label>
+        <div class="input-wrap">
+          <span class="input-icon">💬</span>
+          <input type="text" id="wechat" placeholder="Your WeChat ID"
+            oninput="validateWechat()" autocomplete="off" spellcheck="false"/>
+        </div>
+        <div class="field-error" id="err-wechat"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-wrap">
+          <span class="input-icon">✉</span>
+          <input type="email" id="email" placeholder="you@example.com"
+            oninput="validateEmail()" autocomplete="email"/>
+        </div>
+        <div class="field-error" id="err-email"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <button class="btn-submit" id="submit-btn" disabled onclick="handleSubmit()">
+        <span class="btn-text">Submit Details →</span>
+        <div class="spinner"></div>
+      </button>
+    </div>
+
+    <!-- Processing -->
+    <div id="screen-processing" class="screen">
+      <div class="orbit">
+        <div class="orbit-ring r1"></div>
+        <div class="orbit-ring r2"></div>
+        <div class="orbit-center">⚡</div>
+      </div>
+      <div class="state-title">Setting Up Your Account</div>
+      <p class="state-sub">Your details have been received and are being reviewed. This page will update automatically — there is no need to refresh.</p>
+      <div class="pulse-bars">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      </div>
+      <div class="order-card">
+        <div class="oc-row"><span class="oc-label">Package</span><span class="oc-value" id="proc-pkg">—</span></div>
+        <div class="oc-row"><span class="oc-label">Organization ID</span><span class="oc-value" id="proc-orgid">—</span></div>
+        <div class="oc-row"><span class="oc-label">Status</span><span class="pill pill-proc"><span class="pd"></span>Under Review</span></div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot done">✓</div>
+          <div class="tl-body"><div class="tl-title">Details Submitted</div><div class="tl-sub">Your information has been received and saved.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot spin" id="tl2-dot">◎</div>
+          <div class="tl-body"><div class="tl-title" id="tl2-title">Under Review</div><div class="tl-sub" id="tl2-sub">Our system is verifying your account details.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot wait" id="tl3-dot">○</div>
+          <div class="tl-body"><div class="tl-title dim" id="tl3-title">Activation Pending</div><div class="tl-sub" id="tl3-sub">Your package will be activated upon successful verification.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activated -->
+    <div id="screen-activated" class="screen">
+      <svg class="check-ring" viewBox="0 0 80 80" fill="none">
+        <circle cx="40" cy="40" r="35" stroke="#16a34a" stroke-width="2"/>
+        <polyline points="24,40 34,52 56,28" stroke="#16a34a" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="state-title">Package Successfully Activated!</div>
+      <p class="state-sub">Your package is now live and ready to use. Welcome aboard!</p>
+      <div class="act-banner">
+        <div class="act-banner-label">✓ Activation Confirmed</div>
+        <div class="act-banner-row"><span>Date</span><span id="act-date">—</span></div>
+        <div class="act-banner-row"><span>Time</span><span id="act-time">—</span></div>
+      </div>
+      <div class="order-card">
+        <div class="oc-row"><span class="oc-label">Package</span><span class="oc-value" id="act-pkg">—</span></div>
+        <div class="oc-row"><span class="oc-label">Organization ID</span><span class="oc-value" id="act-orgid">—</span></div>
+        <div class="oc-row"><span class="oc-label">WeChat</span><span class="oc-value" id="act-wechat">—</span></div>
+        <div class="oc-row"><span class="oc-label">Email</span><span class="oc-value" id="act-email">—</span></div>
+        <div class="oc-row"><span class="oc-label">Status</span><span class="pill pill-active">✓ Active</span></div>
+      </div>
+      <div class="check-pro" id="check-pro-section">
+        <!-- filled dynamically by showActivated() -->
+      </div>
+      <p style="font-size:.75rem;color:var(--muted);line-height:1.65;text-align:center">Thank you for choosing DTC — Digital Tools Corner.<br>For any assistance, please reach out via WeChat.</p>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    DTC — Digital Tools Corner &nbsp;·&nbsp;
+    <a href="/cdn-cgi/l/email-protection#d5a6a0a5a5baa7a195b1a1b6fbb6bab8"><span class="__cf_email__" data-cfemail="cebdbbbebea1bcba8eaabaade0ada1a3">[email&#160;protected]</span></a>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const UUID_REGEX  = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const linkToken   = new URLSearchParams(location.search).get('token');
+  let pollTimer = null;
+  let state = { orgId:'', wechat:'', email:'', packageType:'' };
+
+  function show(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    if (!linkToken) { showInvalid('No activation link found. Please use the link that was provided to you.'); return; }
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 10000); // 10s timeout
+      const r = await fetch(`/api/validate-token?token=${linkToken}`, { signal: ctrl.signal });
+      clearTimeout(timer);
+      const d = await r.json();
+      if (!d.valid) { showInvalid(d.error); return; }
+      if (d.declined) { showDeclined(d.declineReason); return; }
+      state.customerName = d.customerName;
+      state.packageType  = d.packageType;
+      if (d.submitted) {
+        state.orgId = d.orgId; state.wechat = d.wechat; state.email = d.email;
+        if (d.approved) { showActivated(d.approvedAt); }
+        else { showProcessing(); startPolling(); }
+      } else {
+        document.getElementById('cust-name').textContent = d.customerName;
+        document.getElementById('pkg-label').textContent = d.packageType;
+        applyProductBranding(d.packageType);
+        show('screen-form');
+      }
+    } catch(e) {
+      if (e.name === 'AbortError') showInvalid('The server took too long to respond. Please check your connection and try again.');
+      else showInvalid('Unable to verify your link. Please try again or contact support.');
+    }
+  });
+
+  function showInvalid(msg) { document.getElementById('invalid-msg').textContent = msg; show('screen-invalid'); }
+  function showDeclined(reason) {
+    document.getElementById('decline-reason-msg').textContent = reason || 'The details provided could not be verified. Please ensure you have entered the correct Organization ID and request a new link.';
+    show('screen-declined');
+  }
+
+  function validateSessionData() {
+    const raw = document.getElementById('session-data').value.trim();
+    const ta  = document.getElementById('session-data');
+    const res = document.getElementById('session-result');
+    ta.className = 'session-textarea';
+    res.className = 'session-result';
+    res.innerHTML = '';
+    if (!raw) { checkReady(); return; }
+    let parsed;
+    try { parsed = JSON.parse(raw); } catch {
+      ta.classList.add('err');
+      res.className = 'session-result warn show';
+      res.innerHTML = '<div class="sr-title">⚠ Invalid JSON</div><div style="font-size:.76rem">Please paste the raw content exactly as shown at the URL — do not edit it.</div>';
+      checkReady(); return;
+    }
+    // Find planType and structure anywhere in the object (top-level or one level deep)
+    function find(obj, key) {
+      if (obj && typeof obj === 'object') {
+        if (key in obj) return String(obj[key]);
+        for (const v of Object.values(obj)) {
+          if (v && typeof v === 'object') { const r = find(v, key); if (r !== undefined) return r; }
+        }
+      }
+      return undefined;
+    }
+    const planType  = find(parsed, 'planType');
+    const structure = find(parsed, 'structure');
+    if (planType === undefined && structure === undefined) {
+      ta.classList.add('err');
+      res.className = 'session-result warn show';
+      res.innerHTML = '<div class="sr-title">⚠ Fields Not Found</div><div style="font-size:.76rem">The JSON doesn\'t contain <code>planType</code> or <code>structure</code>. Please make sure you copied the full content from <strong>chatgpt.com/api/auth/session</strong>.</div>';
+      checkReady(); return;
+    }
+    const planOk  = planType  === 'free';
+    const structOk = structure === 'personal';
+    const allOk   = planOk && structOk;
+    const isTeam  = structure === 'team';
+    const hasSub  = planType && planType !== 'free';
+
+    let html = `<div class="sr-title">${allOk ? '✓ Account Verified' : '✕ Account Issue Detected'}</div>`;
+    if (planType !== undefined)  html += `<div class="sr-row"><span class="sr-key">planType</span><span class="sr-val">${planType}<span class="sr-badge ${planOk?'green':'red'}">${planOk?'✓ OK':'✕ Issue'}</span></span></div>`;
+    if (structure !== undefined) html += `<div class="sr-row"><span class="sr-key">structure</span><span class="sr-val">${structure}<span class="sr-badge ${structOk?'green':'red'}">${structOk?'✓ OK':'✕ Issue'}</span></span></div>`;
+    if (!allOk) {
+      let warnings = [];
+      if (isTeam)  warnings.push('Switch your ChatGPT from <strong>Team</strong> to <strong>Personal</strong>.');
+      if (hasSub)  warnings.push('Your account has an active subscription. Please make sure there is no active package before proceeding.');
+      html += `<div class="sr-warning">⚠ ${warnings.join('<br>')}</div>`;
+    }
+    if (allOk) { ta.classList.add('ok'); res.className = 'session-result ok show'; }
+    else        { ta.classList.add('err'); res.className = 'session-result err show'; }
+    res.innerHTML = html;
+    checkReady();
+  }
+
+  function validateOrgId() {
+    if (isChatGPT()) return;
+    const v = document.getElementById('org-id').value.trim();
+    const el = document.getElementById('org-id'), err = document.getElementById('err-orgid');
+    el.className = '';
+    if (!v) { err.classList.remove('show'); checkReady(); return; }
+    if (v.toLowerCase().startsWith('org-')) return setErr(el, err, 'Please remove the "org-" prefix and enter only the UUID portion.');
+    if (v.split('-').length !== 5) return setErr(el, err, `Your Organization ID should have 5 sections separated by dashes. (${v.split('-').length} found)`);
+    if (!UUID_REGEX.test(v)) return setErr(el, err, 'Your Organization ID contains invalid characters. Please copy it directly from your account settings.');
+    el.classList.add('ok'); err.classList.remove('show'); checkReady();
+  }
+
+  function validateWechat() {
+    const v = document.getElementById('wechat').value.trim();
+    const el = document.getElementById('wechat'), err = document.getElementById('err-wechat');
+    el.className = '';
+    if (!v) { err.classList.remove('show'); checkReady(); return; }
+    el.classList.add('ok'); err.classList.remove('show'); checkReady();
+  }
+
+  function validateEmail() {
+    const v = document.getElementById('email').value.trim();
+    const el = document.getElementById('email'), err = document.getElementById('err-email');
+    el.className = '';
+    if (!v) { err.classList.remove('show'); checkReady(); return; }
+    if (!EMAIL_REGEX.test(v)) return setErr(el, err, 'Please enter a valid email address (e.g. name@example.com).');
+    el.classList.add('ok'); err.classList.remove('show'); checkReady();
+  }
+
+  function setErr(el, errEl, msg) {
+    el.classList.add('err'); errEl.textContent = msg; errEl.classList.add('show');
+    document.getElementById('submit-btn').disabled = true;
+  }
+
+  function checkReady() {
+    const wechatOk = document.getElementById('wechat').value.trim().length > 0;
+    const emailOk  = EMAIL_REGEX.test(document.getElementById('email').value.trim());
+    let fieldOk;
+    if (isChatGPT()) {
+      try {
+        const raw = document.getElementById('session-data').value.trim();
+        const p   = JSON.parse(raw);
+        const find = (obj, key) => { if(obj&&typeof obj==='object'){if(key in obj)return String(obj[key]);for(const v of Object.values(obj)){const r=find(v,key);if(r!==undefined)return r;}} return undefined; };
+        fieldOk = find(p,'planType')==='free' && find(p,'structure')==='personal';
+      } catch { fieldOk = false; }
+    } else {
+      fieldOk = UUID_REGEX.test(document.getElementById('org-id').value.trim());
+    }
+    document.getElementById('submit-btn').disabled = !(fieldOk && wechatOk && emailOk);
+  }
+
+  async function handleSubmit() {
+    const orgId  = isChatGPT()
+      ? document.getElementById('session-data').value.trim()
+      : document.getElementById('org-id').value.trim();
+    const wechat = document.getElementById('wechat').value.trim();
+    const email  = document.getElementById('email').value.trim();
+    const btn    = document.getElementById('submit-btn');
+    btn.classList.add('loading'); btn.disabled = true;
+    try {
+      const r = await fetch('/api/submit', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ token: linkToken, orgId, wechat, email }) });
+      const d = await r.json();
+      if (d.success) {
+        state.orgId = orgId; state.wechat = wechat; state.email = email;
+        showProcessing(); startPolling();
+      } else {
+        if (d.errors) {
+          if (d.errors.orgId)  setErr(document.getElementById('org-id'),  document.getElementById('err-orgid'),  d.errors.orgId);
+          if (d.errors.wechat) setErr(document.getElementById('wechat'),   document.getElementById('err-wechat'), d.errors.wechat);
+          if (d.errors.email)  setErr(document.getElementById('email'),    document.getElementById('err-email'),  d.errors.email);
+        }
+        btn.classList.remove('loading'); btn.disabled = false;
+      }
+    } catch {
+      alert('A network error occurred. Please check your connection and try again.');
+      btn.classList.remove('loading'); btn.disabled = false;
+    }
+  }
+
+  function showProcessing() {
+    document.getElementById('proc-pkg').textContent   = state.packageType;
+    document.getElementById('proc-orgid').textContent = state.orgId ? state.orgId.slice(0,18)+'…' : '—';
+    show('screen-processing');
+  }
+
+  function startPolling() {
+    pollTimer = setInterval(async () => {
+      try {
+        const r = await fetch(`/api/status?token=${linkToken}`);
+        const d = await r.json();
+        if (d.status === 'activated') {
+          clearInterval(pollTimer);
+          state.orgId = d.orgId||state.orgId; state.wechat = d.wechat||state.wechat;
+          state.email = d.email||state.email; state.packageType = d.packageType||state.packageType;
+          showActivated(d.approvedAt);
+        } else if (d.status === 'declined') {
+          clearInterval(pollTimer);
+          showDeclined(d.declineReason);
+        }
+      } catch {}
+    }, 5000);
+  }
+
+  function copySessionUrl(btn) {
+    navigator.clipboard.writeText('https://chatgpt.com/api/auth/session').then(() => {
+      btn.textContent = 'Copied ✓'; btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function getProductName(pkg) {
+    const p = (pkg||'').toLowerCase();
+    if (p.includes('grok'))    return 'Grok';
+    if (p.includes('chatgpt')) return 'ChatGPT';
+    return 'Claude';
+  }
+
+  function isChatGPT() { return (state.packageType||'').toLowerCase().includes('chatgpt'); }
+
+  function applyProductBranding(pkg) {
+    const name = getProductName(pkg);
+    document.getElementById('brand-sub').textContent = name + ' Activation Portal';
+    document.getElementById('instructions-box').innerHTML = getInstructions(pkg);
+    // Toggle form fields
+    const isGPT = (pkg||'').toLowerCase().includes('chatgpt');
+    document.getElementById('org-id-section').style.display       = isGPT ? 'none' : '';
+    document.getElementById('chatgpt-session-section').style.display = isGPT ? '' : 'none';
+    checkReady();
+  }
+
+  function getInstructions(pkg) {
+    const p = (pkg||'').toLowerCase();
+    if (p.includes('grok')) {
+      return `<strong>📋 How to Locate Your Organization ID</strong>
+        <ol>
+          <li>Open <span>x.com</span> and sign in to your account.</li>
+          <li>Click the <span>bottom-left corner</span> to open your menu.</li>
+          <li>Click <span>Settings</span>, then select <span>Account</span>.</li>
+          <li>Your Organization ID is displayed in this format:</li>
+        </ol>
+        <div class="example"><span>9797833c-6d53-4c57-95c9-5b128a2366bc</span></div>`;
+    }
+    if (p.includes('chatgpt')) {
+      return `<strong>📋 How to Check Your Account Status</strong>
+        <ol>
+          <li>Log in to <span>chatgpt.com</span> in your browser.</li>
+          <li>Once logged in, <span>copy this link</span> and open it in a <span>new tab</span> in the same browser:</li>
+        </ol>
+        <div class="url-row">
+          <span class="url-text">https://chatgpt.com/api/auth/session</span>
+          <button class="url-copy" id="url-copy-btn" onclick="copySessionUrl(this)">Copy</button>
+        </div>
+        <ol start="3" style="margin-top:.6rem">
+          <li>Copy the entire JSON content shown on that page.</li>
+          <li>Paste it into the field below — your account will be verified instantly.</li>
+        </ol>`;
+    }
+    // Default: Claude
+    return `<strong>📋 How to Locate Your Organization ID</strong>
+      <ol>
+        <li>Open <span>claude.ai</span> and sign in to your account.</li>
+        <li>Click your <span>profile icon</span> in the bottom-left corner of the screen.</li>
+        <li>Select <span>Settings</span>, then click on <span>Account</span>.</li>
+        <li>Your Organization ID is displayed in this format:</li>
+      </ol>
+      <div class="example"><span>714fe120-d7yd-4da9-bb53-84c42f10wac7</span></div>`;
+  }
+
+  function getVerifySteps(pkg) {
+    const p = (pkg||'').toLowerCase();
+    if (p.includes('groksuper')) {
+      return `<div class="check-pro-title">🔍 How to Verify Your GrokSuper Plan is Active</div>
+        <div class="cp-step"><div class="cp-num">1</div>Open <strong>grok.com</strong> and sign in to your account.</div>
+        <div class="cp-step"><div class="cp-num">2</div>Click your <strong>profile icon</strong> in the top-right corner.</div>
+        <div class="cp-step"><div class="cp-num">3</div>Navigate to <strong>Settings</strong> → <strong>Subscription</strong>.</div>
+        <div class="cp-step"><div class="cp-num">4</div>Your plan should now display as <strong style="color:var(--success)">GrokSuper</strong> with an active status.</div>
+        <div class="cp-step"><div class="cp-num">5</div>You can confirm by starting a conversation — GrokSuper users have access to extended usage limits and advanced models.</div>`;
+    }
+    if (p.includes('chatgpt')) {
+      return `<div class="check-pro-title">🔍 How to Verify Your ChatGPT Plus Plan is Active</div>
+        <div class="cp-step"><div class="cp-num">1</div>Open <strong>chatgpt.com</strong> and sign in to your account.</div>
+        <div class="cp-step"><div class="cp-num">2</div>Click your <strong>profile icon</strong> in the bottom-left corner.</div>
+        <div class="cp-step"><div class="cp-num">3</div>Navigate to <strong>Settings</strong> → <strong>Subscription</strong>.</div>
+        <div class="cp-step"><div class="cp-num">4</div>Your plan should now display as <strong style="color:var(--success)">ChatGPT Plus</strong> with an active status.</div>
+        <div class="cp-step"><div class="cp-num">5</div>You can confirm by accessing GPT-4o — Plus users have access to <strong>GPT-4o</strong> and extended usage limits.</div>`;
+    }
+    // Default: Claude Pro
+    return `<div class="check-pro-title">🔍 How to Verify Your Pro Plan is Active</div>
+      <div class="cp-step"><div class="cp-num">1</div>Open <strong>claude.ai</strong> and sign in to your account.</div>
+      <div class="cp-step"><div class="cp-num">2</div>Click your <strong>profile icon</strong> in the bottom-left corner.</div>
+      <div class="cp-step"><div class="cp-num">3</div>Navigate to <strong>Settings</strong> → <strong>Billing</strong>.</div>
+      <div class="cp-step"><div class="cp-num">4</div>Your plan should now display as <strong style="color:var(--success)">Claude Pro</strong> with an active status.</div>
+      <div class="cp-step"><div class="cp-num">5</div>You can also confirm by starting a conversation — Pro users have access to <strong>Claude Opus</strong> and extended usage limits.</div>`;
+  }
+
+  function showActivated(approvedAt) {
+    document.getElementById('tl2-dot').className = 'tl-dot done'; document.getElementById('tl2-dot').textContent = '✓';
+    document.getElementById('tl2-title').textContent = 'Verification Complete';
+    document.getElementById('tl2-sub').textContent   = 'Your details have been verified successfully.';
+    document.getElementById('tl3-dot').className = 'tl-dot done'; document.getElementById('tl3-dot').textContent = '✓';
+    document.getElementById('tl3-title').textContent = 'Package Activated';
+    document.getElementById('tl3-title').classList.remove('dim');
+    document.getElementById('tl3-sub').textContent = 'Your package is now live.';
+    const ts = approvedAt ? new Date(approvedAt) : new Date();
+    document.getElementById('act-date').textContent  = ts.toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
+    document.getElementById('act-time').textContent  = ts.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    document.getElementById('act-pkg').textContent    = state.packageType;
+    document.getElementById('act-orgid').textContent  = state.orgId  ? state.orgId.slice(0,18)+'…' : '—';
+    document.getElementById('act-wechat').textContent = state.wechat || '—';
+    document.getElementById('act-email').textContent  = state.email  || '—';
+    document.getElementById('check-pro-section').innerHTML = getVerifySteps(state.packageType);
+    setTimeout(() => { show('screen-activated'); launchConfetti(); }, 600);
+  }
+
+  function launchConfetti() {
+    const c = document.getElementById('confetti'); c.classList.add('on');
+    const cols = ['#2563eb','#6366f1','#16a34a','#0ea5e9','#8b5cf6'];
+    for (let i = 0; i < 30; i++) {
+      const d = document.createElement('div'); d.
