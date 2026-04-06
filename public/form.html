@@ -64,11 +64,6 @@
     .instructions li span{color:var(--text);font-weight:500}
     .instructions .example{margin-top:.75rem;padding:.6rem .85rem;background:var(--white);border:1px solid var(--border);border-radius:7px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.02em}
     .instructions .example span{color:var(--blue);font-weight:500}
-    .instructions .url-row{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;background:var(--white);border:1px solid var(--border);border-radius:7px;padding:.5rem .7rem .5rem .85rem}
-    .instructions .url-text{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--blue);font-weight:500;flex:1;word-break:break-all}
-    .instructions .url-copy{flex-shrink:0;background:var(--blue-light);border:1.5px solid var(--blue-mid);border-radius:6px;padding:.22rem .65rem;font-size:.65rem;font-family:'Inter',sans-serif;color:var(--blue);cursor:pointer;font-weight:700;transition:all .18s;white-space:nowrap}
-    .instructions .url-copy:hover{background:var(--blue-mid)}
-    .instructions .url-copy.copied{background:#dcfce7;border-color:#86efac;color:#15803d}
 
     /* Form */
     .form-group{margin-bottom:1.1rem}
@@ -85,31 +80,6 @@
     .field-hint{font-size:.7rem;color:var(--muted2);margin-top:.35rem;padding-left:.1rem}
     .field-error{font-size:.73rem;color:var(--error);margin-top:.35rem;padding-left:.1rem;display:none}
     .field-error.show{display:block;animation:slideIn .18s ease}
-
-    /* ChatGPT session textarea */
-    .session-textarea{width:100%;background:var(--white);border:1.5px solid var(--border);border-radius:9px;padding:.75rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text);outline:none;resize:vertical;min-height:110px;transition:border-color .2s,box-shadow .2s;line-height:1.6}
-    .session-textarea::placeholder{color:var(--muted2);font-family:'Inter',sans-serif;font-size:.82rem}
-    .session-textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
-    .session-textarea.ok{border-color:var(--success);box-shadow:0 0 0 3px rgba(22,163,74,.1)}
-    .session-textarea.err{border-color:var(--error);box-shadow:0 0 0 3px rgba(220,38,38,.08)}
-
-    /* Session validation result */
-    .session-result{display:none;border-radius:10px;padding:.85rem 1rem;margin-top:.6rem;font-size:.79rem;line-height:1.7}
-    .session-result.show{display:block;animation:slideIn .2s ease}
-    .session-result.ok{background:var(--success-bg);border:1.5px solid var(--success-border);color:#14532d}
-    .session-result.err{background:var(--error-bg);border:1.5px solid var(--error-border);color:#7f1d1d}
-    .session-result.warn{background:var(--warn-bg);border:1.5px solid var(--warn-border);color:#78350f}
-    .sr-title{font-weight:700;margin-bottom:.4rem;font-size:.82rem;display:flex;align-items:center;gap:.4rem}
-    .sr-row{display:flex;align-items:center;gap:.5rem;font-size:.76rem;margin-bottom:.2rem}
-    .sr-row:last-child{margin-bottom:0}
-    .sr-key{color:inherit;opacity:.7;min-width:80px;font-family:'JetBrains Mono',monospace;font-size:.7rem}
-    .sr-val{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:600}
-    .sr-badge{display:inline-block;padding:.1rem .45rem;border-radius:5px;font-size:.65rem;font-weight:700;margin-left:.3rem}
-    .sr-badge.green{background:#dcfce7;color:#15803d;border:1px solid #86efac}
-    .sr-badge.red{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
-    .sr-warning{margin-top:.55rem;padding:.55rem .75rem;background:rgba(220,38,38,.08);border-radius:7px;font-size:.75rem;font-weight:600;color:#b91c1c;border:1px solid #fca5a5}
-    .session-note{margin-top:.55rem;padding:.6rem .85rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;font-size:.74rem;color:#15803d;line-height:1.65}
-    .session-note strong{font-weight:700}
 
     .divider{height:1px;background:var(--border);margin:1.4rem 0}
 
@@ -238,7 +208,7 @@
       <div class="brand-name">DTC</div>
     </div>
     <div class="brand-tagline">Digital Tools Corner</div>
-    <div class="brand-sub" id="brand-sub">Activation Portal</div>
+    <div class="brand-sub">Claude Activation Portal</div>
   </div>
 
   <div class="card">
@@ -266,49 +236,52 @@
         <div class="decline-banner-title">⚠ Declined by DTC System</div>
         <div class="decline-banner-msg" id="decline-reason-msg">The details provided could not be verified. Please ensure you have entered the correct Organization ID and try again with a new link.</div>
       </div>
-      <p style="font-size:.78rem;color:var(--muted);line-height:1.65">If you believe this is an error, please contact us on WeChat or at <a href="/cdn-cgi/l/email-protection#6e1d1b1e1e011c1a2e0a1a0d400d0103" style="color:var(--blue)"><span class="__cf_email__" data-cfemail="097a7c7979667b7d496d7d6a276a6664">[email&#160;protected]</span></a>.</p>
+      <p style="font-size:.78rem;color:var(--muted);line-height:1.65">If you believe this is an error, please contact us on WeChat or at <a href="mailto:support@dtc.com" style="color:var(--blue)">support@dtc.com</a>.</p>
     </div>
 
     <!-- Form -->
     <div id="screen-form" class="screen">
-      <div class="service-badge"><div class="badge-dot"></div><span id="pkg-label">Pro</span></div>
+      <div class="service-badge"><div class="badge-dot"></div>Claude — <span id="pkg-label">Pro</span></div>
       <div class="card-title">Activate Your Package</div>
-      <p class="card-sub">Hello <strong id="cust-name">there</strong>! Please provide the details below to activate your package. This will only take a moment.</p>
+      <p class="card-sub">Hello <strong id="cust-name">there</strong>! Please provide the details below to activate your Claude package. This will only take a moment.</p>
 
-      <div class="instructions" id="instructions-box">
+      <div class="instructions">
         <strong>📋 How to Locate Your Organization ID</strong>
-        <ol>
-          <li>Open <span>claude.ai</span> and sign in to your account.</li>
-          <li>Click your <span>profile icon</span> in the bottom-left corner of the screen.</li>
-          <li>Select <span>Settings</span>, then click on <span>Account</span>.</li>
-          <li>Your Organization ID is displayed in this format:</li>
-        </ol>
-        <div class="example"><span>714fe120-d7yd-4da9-bb53-84c42f10wac7</span></div>
-      </div>
-
-      <!-- Standard org-id field (Claude / Grok) -->
-      <div id="org-id-section">
-        <div class="form-group">
-          <label for="org-id">Organization ID</label>
-          <div class="input-wrap">
-            <span class="input-icon">#</span>
-            <input type="text" id="org-id" placeholder="e.g. 714fe120-d7yd-4da9-bb53-84c42f10wac7"
-              oninput="validateOrgId()" autocomplete="off" spellcheck="false" maxlength="36"/>
-          </div>
-          <div class="field-hint">Format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</div>
-          <div class="field-error" id="err-orgid"></div>
+        <div id="before-instructions-list">
+          <ol>
+            <li>Open <span>claude.ai</span> and sign in to your account.</li>
+            <li>Click your <span>profile icon</span> in the bottom-left corner of the screen.</li>
+            <li>Select <span>Settings</span>, then click on <span>Account</span>.</li>
+            <li>Your Organization ID is displayed in this format:</li>
+          </ol>
+          <div class="example"><span>714fe120-d7yd-4da9-bb53-84c42f10wac7</span></div>
         </div>
       </div>
 
-      <!-- ChatGPT session data field -->
-      <div id="chatgpt-session-section" style="display:none">
-        <div class="form-group">
-          <label for="session-data">ChatGPT Session Data</label>
-          <textarea id="session-data" class="session-textarea"
-            placeholder="Paste the full JSON content here…"
-            oninput="validateSessionData()" spellcheck="false"></textarea>
-          <div id="session-result" class="session-result"></div>
+      <!-- Org ID field (default) -->
+      <div class="form-group" id="field-orgid">
+        <label for="org-id">Organization ID</label>
+        <div class="input-wrap">
+          <span class="input-icon">#</span>
+          <input type="text" id="org-id" placeholder="e.g. 714fe120-d7yd-4da9-bb53-84c42f10wac7"
+            oninput="validateOrgId()" autocomplete="off" spellcheck="false" maxlength="36"/>
         </div>
+        <div class="field-hint">Format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</div>
+        <div class="field-error" id="err-orgid"></div>
+      </div>
+
+      <!-- Session Details field (shown for products like ChatGPT) -->
+      <div class="form-group" id="field-session" style="display:none">
+        <label for="session-details">Session Details</label>
+        <div class="input-wrap" style="position:relative">
+          <span class="input-icon">📋</span>
+          <textarea id="session-details" rows="4" placeholder='Paste your session JSON here, e.g. {"planType":"free","structure":"personal",...}'
+            oninput="validateSession()" autocomplete="off" spellcheck="false"
+            style="padding:.78rem 1rem .78rem 2.7rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;resize:vertical;min-height:90px;width:100%;background:var(--white);border:1.5px solid var(--border);border-radius:9px;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s"></textarea>
+        </div>
+        <div class="field-hint" id="session-hint">Paste the full session JSON provided. Required: planType must be "free" and structure must be "personal".</div>
+        <div class="field-error" id="err-session"></div>
+        <div id="session-warnings" style="margin-top:.4rem"></div>
       </div>
 
       <div class="form-group">
@@ -374,15 +347,45 @@
 
     <!-- Activated -->
     <div id="screen-activated" class="screen">
-      <svg class="check-ring" viewBox="0 0 80 80" fill="none">
-        <circle cx="40" cy="40" r="35" stroke="#16a34a" stroke-width="2"/>
-        <polyline points="24,40 34,52 56,28" stroke="#16a34a" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <div class="state-title">Package Successfully Activated!</div>
-      <p class="state-sub">Your package is now live and ready to use. Welcome aboard!</p>
-      <div class="act-banner">
+
+      <!-- Active state header -->
+      <div id="act-header-active">
+        <svg class="check-ring" viewBox="0 0 80 80" fill="none">
+          <circle cx="40" cy="40" r="35" stroke="#16a34a" stroke-width="2"/>
+          <polyline points="24,40 34,52 56,28" stroke="#16a34a" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="state-title">Package Active</div>
+        <p class="state-sub">Your package is live. You can return to this page any time to check your remaining days.</p>
+      </div>
+
+      <!-- Expired state header -->
+      <div id="act-header-expired" style="display:none">
+        <div class="state-icon si-warn" style="margin:0 auto 1.4rem">⏰</div>
+        <div class="state-title" style="color:var(--warn)">Package Expired</div>
+        <p class="state-sub">Your subscription period has ended. Please contact the admin to renew your package.</p>
+        <div style="background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:10px;padding:.9rem 1.1rem;margin-bottom:1.2rem;text-align:left">
+          <div style="font-size:.67rem;text-transform:uppercase;letter-spacing:.1em;color:var(--warn);font-weight:700;margin-bottom:.4rem">⚠ Subscription Ended</div>
+          <div style="font-size:.8rem;color:#92400e;line-height:1.65">Your <strong id="act-pkg-expired">package</strong> subscription has expired. To reactivate, please contact your admin on WeChat or via email.</div>
+        </div>
+      </div>
+
+      <!-- Subscription countdown card -->
+      <div id="act-countdown-card" style="background:var(--blue-light);border:1px solid var(--blue-mid);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1rem;text-align:center">
+        <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);font-weight:700;margin-bottom:.5rem">Subscription Status</div>
+        <div id="act-days-display" style="font-size:2.2rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--blue);line-height:1">—</div>
+        <div id="act-days-label" style="font-size:.72rem;color:var(--muted);margin-top:.2rem">days remaining</div>
+        <div style="height:6px;background:var(--blue-mid);border-radius:3px;margin:.75rem 0 .5rem;overflow:hidden">
+          <div id="act-progress-bar" style="height:100%;border-radius:3px;transition:width .6s ease;background:var(--blue)"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.67rem;color:var(--muted)">
+          <span>Started <span id="act-start-date" style="color:var(--text);font-weight:500">—</span></span>
+          <span>Expires <span id="act-expiry-date" style="color:var(--text);font-weight:500">—</span></span>
+        </div>
+      </div>
+
+      <div class="act-banner" id="act-confirmed-banner">
         <div class="act-banner-label">✓ Activation Confirmed</div>
-        <div class="act-banner-row"><span>Date</span><span id="act-date">—</span></div>
+        <div class="act-banner-row"><span>Activated On</span><span id="act-date">—</span></div>
         <div class="act-banner-row"><span>Time</span><span id="act-time">—</span></div>
       </div>
       <div class="order-card">
@@ -390,10 +393,17 @@
         <div class="oc-row"><span class="oc-label">Organization ID</span><span class="oc-value" id="act-orgid">—</span></div>
         <div class="oc-row"><span class="oc-label">WeChat</span><span class="oc-value" id="act-wechat">—</span></div>
         <div class="oc-row"><span class="oc-label">Email</span><span class="oc-value" id="act-email">—</span></div>
-        <div class="oc-row"><span class="oc-label">Status</span><span class="pill pill-active">✓ Active</span></div>
+        <div class="oc-row"><span class="oc-label">Status</span><span class="pill" id="act-status-pill">—</span></div>
       </div>
-      <div class="check-pro" id="check-pro-section">
-        <!-- filled dynamically by showActivated() -->
+      <div class="check-pro" id="act-how-to-verify">
+        <div class="check-pro-title">🔍 How to Verify Your Plan is Active</div>
+        <div id="after-instructions-list">
+          <div class="cp-step"><div class="cp-num">1</div>Open <strong>claude.ai</strong> and sign in to your account.</div>
+          <div class="cp-step"><div class="cp-num">2</div>Click your <strong>profile icon</strong> in the bottom-left corner.</div>
+          <div class="cp-step"><div class="cp-num">3</div>Navigate to <strong>Settings</strong> → <strong>Billing</strong>.</div>
+          <div class="cp-step"><div class="cp-num">4</div>Your plan should now display as <strong style="color:var(--success)">Claude Pro</strong> with an active status.</div>
+          <div class="cp-step"><div class="cp-num">5</div>You can also confirm by starting a conversation — Pro users have access to <strong>Claude Opus</strong> and extended usage limits.</div>
+        </div>
       </div>
       <p style="font-size:.75rem;color:var(--muted);line-height:1.65;text-align:center">Thank you for choosing DTC — Digital Tools Corner.<br>For any assistance, please reach out via WeChat.</p>
     </div>
@@ -402,48 +412,84 @@
 
   <div class="footer">
     DTC — Digital Tools Corner &nbsp;·&nbsp;
-    <a href="/cdn-cgi/l/email-protection#d5a6a0a5a5baa7a195b1a1b6fbb6bab8"><span class="__cf_email__" data-cfemail="cebdbbbebea1bcba8eaabaade0ada1a3">[email&#160;protected]</span></a>
+    <a href="mailto:support@dtc.com">support@dtc.com</a>
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   const UUID_REGEX  = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const linkToken   = new URLSearchParams(location.search).get('token');
   let pollTimer = null;
-  let state = { orgId:'', wechat:'', email:'', packageType:'' };
+  let state = { orgId:'', wechat:'', email:'', sessionDetails:'', packageType:'', useSessionField: false };
 
   function show(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
   }
 
+  function applyFieldMode(useSession) {
+    state.useSessionField = useSession;
+    document.getElementById('field-orgid').style.display   = useSession ? 'none' : '';
+    document.getElementById('field-session').style.display = useSession ? '' : 'none';
+    checkReady();
+  }
+
+  function renderInstructions(text, container, mode) {
+    if (!text) return;
+    const lines = text.split('\n').filter(l => l.trim());
+    if (mode === 'before') {
+      // render as numbered list in .instructions box
+      const ol = document.createElement('ol');
+      lines.forEach(line => {
+        const li = document.createElement('li');
+        // strip leading "N." or "N)" if present
+        li.innerHTML = line.replace(/^\d+[\.\)]\s*/, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        ol.appendChild(li);
+      });
+      container.innerHTML = '';
+      container.appendChild(ol);
+    } else {
+      // render as cp-step items
+      container.innerHTML = '';
+      lines.forEach((line, i) => {
+        const div = document.createElement('div');
+        div.className = 'cp-step';
+        const num = document.createElement('div');
+        num.className = 'cp-num';
+        num.textContent = i + 1;
+        const txt = document.createElement('div');
+        txt.innerHTML = line.replace(/^\d+[\.\)]\s*/, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        div.appendChild(num);
+        div.appendChild(txt);
+        container.appendChild(div);
+      });
+    }
+  }
+
   window.addEventListener('DOMContentLoaded', async () => {
     if (!linkToken) { showInvalid('No activation link found. Please use the link that was provided to you.'); return; }
     try {
-      const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 10000); // 10s timeout
-      const r = await fetch(`/api/validate-token?token=${linkToken}`, { signal: ctrl.signal });
-      clearTimeout(timer);
+      const r = await fetch(`/api/validate-token?token=${linkToken}`);
       const d = await r.json();
       if (!d.valid) { showInvalid(d.error); return; }
       if (d.declined) { showDeclined(d.declineReason); return; }
       state.customerName = d.customerName;
       state.packageType  = d.packageType;
+      // Apply instructions from the token's selected set
+      if (d.beforeApproval) renderInstructions(d.beforeApproval, document.getElementById('before-instructions-list'), 'before');
+      if (d.afterApproval)  renderInstructions(d.afterApproval,  document.getElementById('after-instructions-list'),  'after');
       if (d.submitted) {
         state.orgId = d.orgId; state.wechat = d.wechat; state.email = d.email;
-        if (d.approved) { showActivated(d.approvedAt); }
+        if (d.approved) { showActivated(d.approvedAt, d.subscriptionExpiresAt); }
         else { showProcessing(); startPolling(); }
       } else {
         document.getElementById('cust-name').textContent = d.customerName;
         document.getElementById('pkg-label').textContent = d.packageType;
-        applyProductBranding(d.packageType);
+        applyFieldMode(!!d.useSessionField);
         show('screen-form');
       }
-    } catch(e) {
-      if (e.name === 'AbortError') showInvalid('The server took too long to respond. Please check your connection and try again.');
-      else showInvalid('Unable to verify your link. Please try again or contact support.');
-    }
+    } catch { showInvalid('Unable to verify your link. Please try again or contact support.'); }
   });
 
   function showInvalid(msg) { document.getElementById('invalid-msg').textContent = msg; show('screen-invalid'); }
@@ -452,62 +498,7 @@
     show('screen-declined');
   }
 
-  function validateSessionData() {
-    const raw = document.getElementById('session-data').value.trim();
-    const ta  = document.getElementById('session-data');
-    const res = document.getElementById('session-result');
-    ta.className = 'session-textarea';
-    res.className = 'session-result';
-    res.innerHTML = '';
-    if (!raw) { checkReady(); return; }
-    let parsed;
-    try { parsed = JSON.parse(raw); } catch {
-      ta.classList.add('err');
-      res.className = 'session-result warn show';
-      res.innerHTML = '<div class="sr-title">⚠ Invalid JSON</div><div style="font-size:.76rem">Please paste the raw content exactly as shown at the URL — do not edit it.</div>';
-      checkReady(); return;
-    }
-    // Find planType and structure anywhere in the object (top-level or one level deep)
-    function find(obj, key) {
-      if (obj && typeof obj === 'object') {
-        if (key in obj) return String(obj[key]);
-        for (const v of Object.values(obj)) {
-          if (v && typeof v === 'object') { const r = find(v, key); if (r !== undefined) return r; }
-        }
-      }
-      return undefined;
-    }
-    const planType  = find(parsed, 'planType');
-    const structure = find(parsed, 'structure');
-    if (planType === undefined && structure === undefined) {
-      ta.classList.add('err');
-      res.className = 'session-result warn show';
-      res.innerHTML = '<div class="sr-title">⚠ Fields Not Found</div><div style="font-size:.76rem">The JSON doesn\'t contain <code>planType</code> or <code>structure</code>. Please make sure you copied the full content from <strong>chatgpt.com/api/auth/session</strong>.</div>';
-      checkReady(); return;
-    }
-    const planOk  = planType  === 'free';
-    const structOk = structure === 'personal';
-    const allOk   = planOk && structOk;
-    const isTeam  = structure === 'team';
-    const hasSub  = planType && planType !== 'free';
-
-    let html = `<div class="sr-title">${allOk ? '✓ Account Verified' : '✕ Account Issue Detected'}</div>`;
-    if (planType !== undefined)  html += `<div class="sr-row"><span class="sr-key">planType</span><span class="sr-val">${planType}<span class="sr-badge ${planOk?'green':'red'}">${planOk?'✓ OK':'✕ Issue'}</span></span></div>`;
-    if (structure !== undefined) html += `<div class="sr-row"><span class="sr-key">structure</span><span class="sr-val">${structure}<span class="sr-badge ${structOk?'green':'red'}">${structOk?'✓ OK':'✕ Issue'}</span></span></div>`;
-    if (!allOk) {
-      let warnings = [];
-      if (isTeam)  warnings.push('Switch your ChatGPT from <strong>Team</strong> to <strong>Personal</strong>.');
-      if (hasSub)  warnings.push('Your account has an active subscription. Please make sure there is no active package before proceeding.');
-      html += `<div class="sr-warning">⚠ ${warnings.join('<br>')}</div>`;
-    }
-    if (allOk) { ta.classList.add('ok'); res.className = 'session-result ok show'; }
-    else        { ta.classList.add('err'); res.className = 'session-result err show'; }
-    res.innerHTML = html;
-    checkReady();
-  }
-
   function validateOrgId() {
-    if (isChatGPT()) return;
     const v = document.getElementById('org-id').value.trim();
     const el = document.getElementById('org-id'), err = document.getElementById('err-orgid');
     el.className = '';
@@ -516,6 +507,59 @@
     if (v.split('-').length !== 5) return setErr(el, err, `Your Organization ID should have 5 sections separated by dashes. (${v.split('-').length} found)`);
     if (!UUID_REGEX.test(v)) return setErr(el, err, 'Your Organization ID contains invalid characters. Please copy it directly from your account settings.');
     el.classList.add('ok'); err.classList.remove('show'); checkReady();
+  }
+
+  function validateSession() {
+    const raw     = document.getElementById('session-details').value.trim();
+    const el      = document.getElementById('session-details');
+    const err     = document.getElementById('err-session');
+    const warnBox = document.getElementById('session-warnings');
+    el.style.borderColor = ''; el.style.boxShadow = '';
+    err.textContent = ''; err.classList.remove('show');
+    warnBox.innerHTML = '';
+    if (!raw) { checkReady(); return; }
+
+    let parsed;
+    try { parsed = JSON.parse(raw); } catch(e) {
+      el.style.borderColor = 'var(--error)'; el.style.boxShadow = '0 0 0 3px rgba(220,38,38,.08)';
+      err.textContent = 'This does not look like valid JSON. Please copy the exact session text provided.';
+      err.classList.add('show'); checkReady(); return;
+    }
+
+    const planType  = (parsed.planType  || '').toLowerCase();
+    const structure = (parsed.structure || '').toLowerCase();
+
+    if (!parsed.planType || !parsed.structure) {
+      el.style.borderColor = 'var(--error)'; el.style.boxShadow = '0 0 0 3px rgba(220,38,38,.08)';
+      err.textContent = 'Session details must include both planType and structure fields.';
+      err.classList.add('show'); checkReady(); return;
+    }
+
+    const warnings = [];
+    if (['pro','plus','go','team','enterprise'].some(b => planType.includes(b))) {
+      warnings.push(`Your plan is "<strong>${parsed.planType}</strong>". Only <strong>Free</strong> plan accounts are accepted for this package.`);
+    } else if (planType !== 'free') {
+      warnings.push(`Unrecognised plan type: "<strong>${parsed.planType}</strong>". Expected: <strong>free</strong>.`);
+    }
+
+    if (['team','business','enterprise','edu'].some(b => structure.includes(b))) {
+      warnings.push(`Your account structure is "<strong>${parsed.structure}</strong>". Only <strong>Personal</strong> accounts are accepted.`);
+    } else if (structure !== 'personal') {
+      warnings.push(`Unrecognised structure: "<strong>${parsed.structure}</strong>". Expected: <strong>personal</strong>.`);
+    }
+
+    if (warnings.length) {
+      el.style.borderColor = 'var(--warn)'; el.style.boxShadow = '0 0 0 3px rgba(217,119,6,.1)';
+      warnBox.innerHTML = warnings.map(w => `
+        <div style="background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:8px;padding:.55rem .85rem;font-size:.76rem;color:#92400e;display:flex;align-items:flex-start;gap:.45rem;margin-bottom:.3rem;line-height:1.55">
+          <span style="flex-shrink:0;font-size:.8rem">⚠</span><span>${w}</span>
+        </div>`).join('');
+      checkReady(); return;
+    }
+
+    // All good
+    el.style.borderColor = 'var(--success)'; el.style.boxShadow = '0 0 0 3px rgba(22,163,74,.08)';
+    checkReady();
   }
 
   function validateWechat() {
@@ -536,46 +580,51 @@
   }
 
   function setErr(el, errEl, msg) {
-    el.classList.add('err'); errEl.textContent = msg; errEl.classList.add('show');
+    if (el.classList) el.classList.add('err');
+    else el.style.borderColor = 'var(--error)';
+    errEl.textContent = msg; errEl.classList.add('show');
     document.getElementById('submit-btn').disabled = true;
   }
 
   function checkReady() {
     const wechatOk = document.getElementById('wechat').value.trim().length > 0;
     const emailOk  = EMAIL_REGEX.test(document.getElementById('email').value.trim());
-    let fieldOk;
-    if (isChatGPT()) {
+    let primaryOk  = false;
+    if (state.useSessionField) {
+      const raw = document.getElementById('session-details').value.trim();
       try {
-        const raw = document.getElementById('session-data').value.trim();
-        const p   = JSON.parse(raw);
-        const find = (obj, key) => { if(obj&&typeof obj==='object'){if(key in obj)return String(obj[key]);for(const v of Object.values(obj)){const r=find(v,key);if(r!==undefined)return r;}} return undefined; };
-        fieldOk = find(p,'planType')==='free' && find(p,'structure')==='personal';
-      } catch { fieldOk = false; }
+        const p = JSON.parse(raw);
+        primaryOk = (p.planType||'').toLowerCase() === 'free' && (p.structure||'').toLowerCase() === 'personal';
+      } catch(e) {}
     } else {
-      fieldOk = UUID_REGEX.test(document.getElementById('org-id').value.trim());
+      primaryOk = UUID_REGEX.test(document.getElementById('org-id').value.trim());
     }
-    document.getElementById('submit-btn').disabled = !(fieldOk && wechatOk && emailOk);
+    document.getElementById('submit-btn').disabled = !(primaryOk && wechatOk && emailOk);
   }
 
   async function handleSubmit() {
-    const orgId  = isChatGPT()
-      ? document.getElementById('session-data').value.trim()
-      : document.getElementById('org-id').value.trim();
-    const wechat = document.getElementById('wechat').value.trim();
-    const email  = document.getElementById('email').value.trim();
-    const btn    = document.getElementById('submit-btn');
+    const orgId          = document.getElementById('org-id').value.trim();
+    const sessionDetails = document.getElementById('session-details').value.trim();
+    const wechat         = document.getElementById('wechat').value.trim();
+    const email          = document.getElementById('email').value.trim();
+    const btn            = document.getElementById('submit-btn');
     btn.classList.add('loading'); btn.disabled = true;
     try {
-      const r = await fetch('/api/submit', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ token: linkToken, orgId, wechat, email }) });
+      const body = { token: linkToken, wechat, email };
+      if (state.useSessionField) body.sessionDetails = sessionDetails;
+      else body.orgId = orgId;
+      const r = await fetch('/api/submit', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
       const d = await r.json();
       if (d.success) {
-        state.orgId = orgId; state.wechat = wechat; state.email = email;
+        state.orgId = orgId; state.sessionDetails = sessionDetails;
+        state.wechat = wechat; state.email = email;
         showProcessing(); startPolling();
       } else {
         if (d.errors) {
-          if (d.errors.orgId)  setErr(document.getElementById('org-id'),  document.getElementById('err-orgid'),  d.errors.orgId);
-          if (d.errors.wechat) setErr(document.getElementById('wechat'),   document.getElementById('err-wechat'), d.errors.wechat);
-          if (d.errors.email)  setErr(document.getElementById('email'),    document.getElementById('err-email'),  d.errors.email);
+          if (d.errors.orgId)          setErr(document.getElementById('org-id'),          document.getElementById('err-orgid'),   d.errors.orgId);
+          if (d.errors.sessionDetails) setErr(document.getElementById('session-details'), document.getElementById('err-session'), d.errors.sessionDetails);
+          if (d.errors.wechat)         setErr(document.getElementById('wechat'),           document.getElementById('err-wechat'),  d.errors.wechat);
+          if (d.errors.email)          setErr(document.getElementById('email'),             document.getElementById('err-email'),   d.errors.email);
         }
         btn.classList.remove('loading'); btn.disabled = false;
       }
@@ -587,7 +636,11 @@
 
   function showProcessing() {
     document.getElementById('proc-pkg').textContent   = state.packageType;
-    document.getElementById('proc-orgid').textContent = state.orgId ? state.orgId.slice(0,18)+'…' : '—';
+    if (state.useSessionField) {
+      document.getElementById('proc-orgid').textContent = state.sessionDetails ? '📋 Session details provided' : '—';
+    } else {
+      document.getElementById('proc-orgid').textContent = state.orgId ? state.orgId.slice(0,18)+'…' : '—';
+    }
     show('screen-processing');
   }
 
@@ -600,7 +653,8 @@
           clearInterval(pollTimer);
           state.orgId = d.orgId||state.orgId; state.wechat = d.wechat||state.wechat;
           state.email = d.email||state.email; state.packageType = d.packageType||state.packageType;
-          showActivated(d.approvedAt);
+          state.sessionDetails = d.sessionDetails||state.sessionDetails;
+          showActivated(d.approvedAt, d.subscriptionExpiresAt);
         } else if (d.status === 'declined') {
           clearInterval(pollTimer);
           showDeclined(d.declineReason);
@@ -609,99 +663,7 @@
     }, 5000);
   }
 
-  function copySessionUrl(btn) {
-    navigator.clipboard.writeText('https://chatgpt.com/api/auth/session').then(() => {
-      btn.textContent = 'Copied ✓'; btn.classList.add('copied');
-      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-    });
-  }
-
-  function getProductName(pkg) {
-    const p = (pkg||'').toLowerCase();
-    if (p.includes('grok'))    return 'Grok';
-    if (p.includes('chatgpt')) return 'ChatGPT';
-    return 'Claude';
-  }
-
-  function isChatGPT() { return (state.packageType||'').toLowerCase().includes('chatgpt'); }
-
-  function applyProductBranding(pkg) {
-    const name = getProductName(pkg);
-    document.getElementById('brand-sub').textContent = name + ' Activation Portal';
-    document.getElementById('instructions-box').innerHTML = getInstructions(pkg);
-    // Toggle form fields
-    const isGPT = (pkg||'').toLowerCase().includes('chatgpt');
-    document.getElementById('org-id-section').style.display       = isGPT ? 'none' : '';
-    document.getElementById('chatgpt-session-section').style.display = isGPT ? '' : 'none';
-    checkReady();
-  }
-
-  function getInstructions(pkg) {
-    const p = (pkg||'').toLowerCase();
-    if (p.includes('grok')) {
-      return `<strong>📋 How to Locate Your Organization ID</strong>
-        <ol>
-          <li>Open <span>x.com</span> and sign in to your account.</li>
-          <li>Click the <span>bottom-left corner</span> to open your menu.</li>
-          <li>Click <span>Settings</span>, then select <span>Account</span>.</li>
-          <li>Your Organization ID is displayed in this format:</li>
-        </ol>
-        <div class="example"><span>9797833c-6d53-4c57-95c9-5b128a2366bc</span></div>`;
-    }
-    if (p.includes('chatgpt')) {
-      return `<strong>📋 How to Check Your Account Status</strong>
-        <ol>
-          <li>Log in to <span>chatgpt.com</span> in your browser.</li>
-          <li>Once logged in, <span>copy this link</span> and open it in a <span>new tab</span> in the same browser:</li>
-        </ol>
-        <div class="url-row">
-          <span class="url-text">https://chatgpt.com/api/auth/session</span>
-          <button class="url-copy" id="url-copy-btn" onclick="copySessionUrl(this)">Copy</button>
-        </div>
-        <ol start="3" style="margin-top:.6rem">
-          <li>Copy the entire JSON content shown on that page.</li>
-          <li>Paste it into the field below — your account will be verified instantly.</li>
-        </ol>`;
-    }
-    // Default: Claude
-    return `<strong>📋 How to Locate Your Organization ID</strong>
-      <ol>
-        <li>Open <span>claude.ai</span> and sign in to your account.</li>
-        <li>Click your <span>profile icon</span> in the bottom-left corner of the screen.</li>
-        <li>Select <span>Settings</span>, then click on <span>Account</span>.</li>
-        <li>Your Organization ID is displayed in this format:</li>
-      </ol>
-      <div class="example"><span>714fe120-d7yd-4da9-bb53-84c42f10wac7</span></div>`;
-  }
-
-  function getVerifySteps(pkg) {
-    const p = (pkg||'').toLowerCase();
-    if (p.includes('groksuper')) {
-      return `<div class="check-pro-title">🔍 How to Verify Your GrokSuper Plan is Active</div>
-        <div class="cp-step"><div class="cp-num">1</div>Open <strong>grok.com</strong> and sign in to your account.</div>
-        <div class="cp-step"><div class="cp-num">2</div>Click your <strong>profile icon</strong> in the top-right corner.</div>
-        <div class="cp-step"><div class="cp-num">3</div>Navigate to <strong>Settings</strong> → <strong>Subscription</strong>.</div>
-        <div class="cp-step"><div class="cp-num">4</div>Your plan should now display as <strong style="color:var(--success)">GrokSuper</strong> with an active status.</div>
-        <div class="cp-step"><div class="cp-num">5</div>You can confirm by starting a conversation — GrokSuper users have access to extended usage limits and advanced models.</div>`;
-    }
-    if (p.includes('chatgpt')) {
-      return `<div class="check-pro-title">🔍 How to Verify Your ChatGPT Plus Plan is Active</div>
-        <div class="cp-step"><div class="cp-num">1</div>Open <strong>chatgpt.com</strong> and sign in to your account.</div>
-        <div class="cp-step"><div class="cp-num">2</div>Click your <strong>profile icon</strong> in the bottom-left corner.</div>
-        <div class="cp-step"><div class="cp-num">3</div>Navigate to <strong>Settings</strong> → <strong>Subscription</strong>.</div>
-        <div class="cp-step"><div class="cp-num">4</div>Your plan should now display as <strong style="color:var(--success)">ChatGPT Plus</strong> with an active status.</div>
-        <div class="cp-step"><div class="cp-num">5</div>You can confirm by accessing GPT-4o — Plus users have access to <strong>GPT-4o</strong> and extended usage limits.</div>`;
-    }
-    // Default: Claude Pro
-    return `<div class="check-pro-title">🔍 How to Verify Your Pro Plan is Active</div>
-      <div class="cp-step"><div class="cp-num">1</div>Open <strong>claude.ai</strong> and sign in to your account.</div>
-      <div class="cp-step"><div class="cp-num">2</div>Click your <strong>profile icon</strong> in the bottom-left corner.</div>
-      <div class="cp-step"><div class="cp-num">3</div>Navigate to <strong>Settings</strong> → <strong>Billing</strong>.</div>
-      <div class="cp-step"><div class="cp-num">4</div>Your plan should now display as <strong style="color:var(--success)">Claude Pro</strong> with an active status.</div>
-      <div class="cp-step"><div class="cp-num">5</div>You can also confirm by starting a conversation — Pro users have access to <strong>Claude Opus</strong> and extended usage limits.</div>`;
-  }
-
-  function showActivated(approvedAt) {
+  function showActivated(approvedAt, subscriptionExpiresAt) {
     document.getElementById('tl2-dot').className = 'tl-dot done'; document.getElementById('tl2-dot').textContent = '✓';
     document.getElementById('tl2-title').textContent = 'Verification Complete';
     document.getElementById('tl2-sub').textContent   = 'Your details have been verified successfully.';
@@ -709,19 +671,84 @@
     document.getElementById('tl3-title').textContent = 'Package Activated';
     document.getElementById('tl3-title').classList.remove('dim');
     document.getElementById('tl3-sub').textContent = 'Your package is now live.';
+
     const ts = approvedAt ? new Date(approvedAt) : new Date();
     document.getElementById('act-date').textContent  = ts.toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
     document.getElementById('act-time').textContent  = ts.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    document.getElementById('act-pkg').textContent    = state.packageType;
-    document.getElementById('act-orgid').textContent  = state.orgId  ? state.orgId.slice(0,18)+'…' : '—';
+    document.getElementById('act-pkg').textContent   = state.packageType;
+    document.getElementById('act-pkg-expired').textContent = state.packageType;
+    document.getElementById('act-orgid').textContent = state.useSessionField
+      ? (state.sessionDetails ? '📋 Session details submitted' : '—')
+      : (state.orgId ? state.orgId.slice(0,18)+'…' : '—');
     document.getElementById('act-wechat').textContent = state.wechat || '—';
     document.getElementById('act-email').textContent  = state.email  || '—';
-    document.getElementById('check-pro-section').innerHTML = getVerifySteps(state.packageType);
-    setTimeout(() => { show('screen-activated'); launchConfetti(); }, 600);
+
+    // Subscription countdown
+    const expiry = subscriptionExpiresAt ? new Date(subscriptionExpiresAt) : null;
+    const now    = new Date();
+    const isExpired = expiry && expiry <= now;
+    const daysLeft  = expiry ? Math.max(0, Math.ceil((expiry - now) / (1000*60*60*24))) : null;
+    const totalDays = approvedAt && expiry ? Math.round((expiry - new Date(approvedAt)) / (1000*60*60*24)) : null;
+    const pctUsed   = (totalDays && expiry) ? Math.min(100, Math.max(0, ((totalDays - daysLeft) / totalDays) * 100)) : 0;
+
+    // Countdown card
+    if (expiry) {
+      document.getElementById('act-start-date').textContent  = ts.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+      document.getElementById('act-expiry-date').textContent = expiry.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+      document.getElementById('act-progress-bar').style.width = pctUsed + '%';
+
+      if (isExpired) {
+        // Expired state
+        document.getElementById('act-days-display').textContent = '0';
+        document.getElementById('act-days-label').textContent   = 'days remaining — expired';
+        document.getElementById('act-countdown-card').style.background  = 'var(--warn-bg)';
+        document.getElementById('act-countdown-card').style.borderColor = 'var(--warn-border)';
+        document.getElementById('act-countdown-card').querySelector('div').style.color = 'var(--warn)';
+        document.getElementById('act-days-display').style.color = 'var(--warn)';
+        document.getElementById('act-progress-bar').style.background = 'var(--warn)';
+        document.getElementById('act-progress-bar').style.width = '100%';
+        document.getElementById('act-header-active').style.display  = 'none';
+        document.getElementById('act-header-expired').style.display = '';
+        document.getElementById('act-how-to-verify').style.display  = 'none';
+        document.getElementById('act-status-pill').textContent  = '⏰ Expired';
+        document.getElementById('act-status-pill').className    = 'pill';
+        document.getElementById('act-status-pill').style.cssText = 'background:var(--warn-bg);border:1px solid var(--warn-border);color:var(--warn)';
+      } else {
+        // Active state
+        document.getElementById('act-days-display').textContent = daysLeft;
+        const urgency = daysLeft <= 5 ? 'var(--error)' : daysLeft <= 14 ? 'var(--warn)' : 'var(--blue)';
+        const urgencyBg = daysLeft <= 5 ? 'var(--error-bg)' : daysLeft <= 14 ? 'var(--warn-bg)' : 'var(--blue-light)';
+        const urgencyBorder = daysLeft <= 5 ? 'var(--error-border)' : daysLeft <= 14 ? 'var(--warn-border)' : 'var(--blue-mid)';
+        document.getElementById('act-countdown-card').style.background  = urgencyBg;
+        document.getElementById('act-countdown-card').style.borderColor = urgencyBorder;
+        document.getElementById('act-days-display').style.color = urgency;
+        document.getElementById('act-progress-bar').style.background = urgency;
+        document.getElementById('act-status-pill').textContent  = '✓ Active';
+        document.getElementById('act-status-pill').className    = 'pill pill-active';
+        document.getElementById('act-status-pill').style.cssText = '';
+        setTimeout(() => { show('screen-activated'); launchConfetti(); }, 600);
+        return;
+      }
+    } else {
+      // No expiry set yet
+      document.getElementById('act-days-display').textContent = '—';
+      document.getElementById('act-days-label').textContent   = 'awaiting subscription details';
+      document.getElementById('act-status-pill').textContent  = '✓ Active';
+      document.getElementById('act-status-pill').className    = 'pill pill-active';
+    }
+
+    setTimeout(() => { show('screen-activated'); if (!isExpired) launchConfetti(); }, 600);
   }
 
   function launchConfetti() {
     const c = document.getElementById('confetti'); c.classList.add('on');
     const cols = ['#2563eb','#6366f1','#16a34a','#0ea5e9','#8b5cf6'];
     for (let i = 0; i < 30; i++) {
-      const d = document.createElement('div'); d.
+      const d = document.createElement('div'); d.className = 'cdot';
+      d.style.cssText = `left:${Math.random()*100}%;bottom:0;background:${cols[i%cols.length]};width:${3+Math.random()*5}px;height:${3+Math.random()*5}px;animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()*.6}s;opacity:0`;
+      c.appendChild(d); setTimeout(() => d.remove(), 4000);
+    }
+  }
+</script>
+</body>
+</html>
